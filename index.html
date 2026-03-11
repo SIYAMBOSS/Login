@@ -3,45 +3,44 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>HEROVEE - CLEAN VISION 8.5</title>
+    <title>HEROVEE - SECURE VAULT 9.5</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
         :root { --neon: #45f3ff; --gold: #ffee00; --pink: #ff00ea; }
         body, html { margin: 0; padding: 0; width: 100%; height: 100%; background: #000; color: var(--neon); font-family: 'Orbitron', sans-serif; overflow: hidden; }
         
-        /* 3D গ্রিড ব্যাকগ্রাউন্ড */
         .bg-container { position: fixed; width: 100%; height: 100%; perspective: 1000px; z-index: -1; }
         .grid { position: absolute; width: 200%; height: 200%; top: -50%; left: -50%; background-image: 
             linear-gradient(var(--neon) 1px, transparent 1px), 
             linear-gradient(90deg, var(--neon) 1px, transparent 1px);
-            background-size: 50px 50px; transform: rotateX(60deg); opacity: 0.12; animation: moveGrid 15s linear infinite; }
+            background-size: 50px 50px; transform: rotateX(60deg); opacity: 0.1; animation: moveGrid 15s linear infinite; }
         @keyframes moveGrid { 0% { transform: rotateX(60deg) translateY(0); } 100% { transform: rotateX(60deg) translateY(50px); } }
 
         .main-ui { display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100vh; position: relative; }
 
-        /* কোর ডিজাইন (Key Monitor Removed) */
-        .core-box { position: relative; width: 300px; height: 300px; display: flex; justify-content: center; align-items: center; }
+        .core-box { position: relative; width: 280px; height: 280px; display: flex; justify-content: center; align-items: center; }
         .ring { position: absolute; border-radius: 50%; border: 2px solid transparent; }
-        .r1 { width: 100%; height: 100%; border-top: 3px solid var(--neon); animation: spin 4s linear infinite; filter: drop-shadow(0 0 10px var(--neon)); }
+        .r1 { width: 100%; height: 100%; border-top: 3px solid var(--neon); animation: spin 4s linear infinite; }
         .r2 { width: 85%; height: 85%; border-bottom: 2px solid var(--gold); animation: spinRev 6s linear infinite; }
-        .r3 { width: 70%; height: 70%; border-left: 2px solid var(--pink); animation: spin 3s ease-in-out infinite; }
         
-        .center-orb { width: 120px; height: 120px; background: radial-gradient(circle, #002222, #000); border-radius: 50%; border: 1px solid var(--neon); display: flex; justify-content: center; align-items: center; z-index: 10; transition: 0.3s; }
-        .center-orb.active { animation: pulseCore 0.6s infinite alternate; border-color: var(--gold); box-shadow: 0 0 40px var(--gold); }
+        .center-orb { width: 110px; height: 110px; background: radial-gradient(circle, #002222, #000); border-radius: 50%; border: 1px solid var(--neon); display: flex; justify-content: center; align-items: center; z-index: 10; transition: 0.3s; }
+        .center-orb.active { animation: pulseCore 0.6s infinite alternate; border-color: var(--gold); box-shadow: 0 0 30px var(--gold); }
         @keyframes pulseCore { from { transform: scale(1); } to { transform: scale(1.1); } }
 
-        /* HUD ডিসপ্লে (Minimal) */
-        .hud { position: absolute; padding: 10px; background: rgba(0, 20, 20, 0.4); border: 1px solid rgba(69, 243, 255, 0.1); font-size: 11px; width: 120px; backdrop-filter: blur(5px); }
+        .hud { position: absolute; padding: 10px; background: rgba(0, 20, 20, 0.4); border: 1px solid rgba(69, 243, 255, 0.1); font-size: 11px; width: 110px; backdrop-filter: blur(5px); }
         .hud-l { top: 20px; left: 20px; border-left: 3px solid var(--neon); }
         .hud-r { top: 20px; right: 20px; border-right: 3px solid var(--gold); text-align: right; }
 
-        #chatDisplay { width: 90%; max-width: 450px; height: 160px; margin-top: 30px; overflow-y: auto; background: rgba(0,0,0,0.8); border: 1px solid rgba(69, 243, 255, 0.1); padding: 15px; font-size: 13px; border-radius: 10px; scrollbar-width: none; }
+        #chatDisplay { width: 90%; max-width: 450px; height: 180px; margin-top: 25px; overflow-y: auto; background: rgba(0,0,0,0.85); border: 1px solid rgba(69, 243, 255, 0.15); padding: 15px; font-size: 13px; border-radius: 10px; scrollbar-width: none; }
 
-        .controls { margin-top: 20px; display: flex; gap: 10px; width: 90%; max-width: 450px; }
+        .controls { margin-top: 15px; display: flex; gap: 10px; width: 90%; max-width: 450px; }
         input { flex: 1; background: #000; border: 1px solid rgba(69, 243, 255, 0.3); color: #fff; padding: 12px; outline: none; border-radius: 5px; }
         .btn { border: none; padding: 10px 15px; font-weight: bold; cursor: pointer; border-radius: 5px; }
         .btn-exe { background: var(--neon); color: #000; }
         .btn-mic { background: var(--gold); color: #000; }
+
+        .logout-btn { position: absolute; bottom: 20px; right: 20px; background: rgba(255,0,0,0.1); border: 1px solid #ff3c7b; color: #ff3c7b; padding: 10px 20px; border-radius: 50px; cursor: pointer; font-size: 12px; font-weight: bold; transition: 0.3s; z-index: 100; }
+        .logout-btn:hover { background: #ff3c7b; color: #000; box-shadow: 0 0 15px #ff3c7b; }
 
         @keyframes spin { 100% { transform: rotate(360deg); } }
         @keyframes spinRev { 100% { transform: rotate(-360deg); } }
@@ -52,109 +51,130 @@
 <div class="bg-container"><div class="grid"></div></div>
 
 <div class="main-ui">
-    <div class="hud hud-l">> STATUS: ONLINE<br>> CPU: <span id="cpu">38</span>%<br>> BOSS: SIYAM</div>
-    <div class="hud hud-r">> VISION: 8.5<br>> SECURE: AES-256<br>> LINK: ACTIVE</div>
+    <div class="hud hud-l">> BOSS: SIYAM<br>> AUTH: SECURE<br>> VISION: 9.5</div>
+    <div class="hud hud-r">> STATUS: ONLINE<br>> CPU: <span id="cpu">32</span>%<br>> MEM: ACTIVE</div>
 
     <div class="core-box">
         <div class="ring r1"></div>
         <div class="ring r2"></div>
-        <div class="ring r3"></div>
-        <div class="center-orb" id="orb"><span id="status" style="font-weight:bold; letter-spacing:2px;">HEROVEE</span></div>
+        <div class="center-orb" id="orb"><span id="status" style="font-weight:bold; letter-spacing:1px;">HEROVEE</span></div>
     </div>
 
-    <div id="chatDisplay">[SYS] All 11 Keys Secured. Ready, Boss Siyam.</div>
+    <div id="chatDisplay"></div>
 
     <div class="controls">
         <button class="btn btn-mic" onclick="startMic()"><i class="fas fa-microphone"></i></button>
-        <input type="text" id="userInput" placeholder="Command HEROVEE..." onkeypress="if(event.key === 'Enter') askAI()">
+        <input type="text" id="userInput" placeholder="Ask HEROVEE..." onkeypress="if(event.key === 'Enter') askAI()">
         <button class="btn btn-exe" onclick="askAI()">EXECUTE</button>
     </div>
+
+    <button class="logout-btn" id="logoutBtn">LOGOUT SYSTEM</button>
 </div>
 
-<script>
-// আপনার ১১টি এপিআই কী (ব্যাকগ্রাউন্ডে থাকবে)
-const API_KEYS = [
-    "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",
-    "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",
-    "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",
-    "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",
-    "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",
-    "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",
-    "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",
-    "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",
-    "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",
-    "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",
-    "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"
-];
+<script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js";
+    import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-auth.js";
 
-let currentKeyIndex = 0;
-const MODEL = "llama-3.3-70b-versatile";
+    // Same Config as login.html
+    const firebaseConfig = {
+        apiKey: "AIzaSyAEl8t2m_HZ1oNOC49lmpiiM4-XhGzWRfE",
+        authDomain: "herovee.firebaseapp.com",
+        projectId: "herovee",
+        storageBucket: "herovee.firebasestorage.app",
+        messagingSenderId: "700112828047",
+        appId: "1:700112828047:web:988f0598b5341a29bba2fa"
+    };
 
-function speak(text) {
-    const synth = window.speechSynthesis;
-    const utter = new SpeechSynthesisUtterance(text);
-    utter.onstart = () => { document.getElementById('orb').classList.add('active'); document.getElementById('status').innerText = "TALKING"; };
-    utter.onend = () => { document.getElementById('orb').classList.remove('active'); document.getElementById('status').innerText = "HEROVEE"; };
-    utter.lang = /[\u0980-\u09FF]/.test(text) ? 'bn-BD' : 'en-US';
-    utter.pitch = 1.3;
-    synth.speak(utter);
-}
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
 
-async function askAI() {
-    const input = document.getElementById('userInput');
-    const chat = document.getElementById('chatDisplay');
-    const val = input.value.trim();
-    if(!val) return;
-
-    chat.innerHTML += `<div style="color:#fff; margin-bottom:8px;">[BOSS]: ${val}</div>`;
-    input.value = "";
-    chat.scrollTop = chat.scrollHeight;
-
-    async function tryRequest(index) {
-        if(index >= API_KEYS.length) {
-            chat.innerHTML += `<div style="color:red;">[ERR]: All API Keys limit exceeded!</div>`;
-            return null;
+    // Auth Check: Login chara keu dhukte parbe na
+    onAuthStateChanged(auth, (user) => {
+        if (!user) {
+            window.location.href = "login.html";
         }
-        
-        try {
-            const res = await fetch("https://api.groq.com/openai/v1/chat/completions", {
-                method: "POST",
-                headers: { "Authorization": `Bearer ${API_KEYS[index]}`, "Content-Type": "application/json" },
-                body: JSON.stringify({
-                    model: MODEL,
-                    messages: [{ role: "system", content: "You are HEROVEE, Siyam's personal high-tech female AI." }, { role: "user", content: val }]
-                })
+    });
+
+    // Logout Function
+    document.getElementById('logoutBtn').onclick = () => {
+        if(confirm("Boss, Logout korben?")) {
+            signOut(auth).then(() => {
+                localStorage.removeItem('herovee_chat');
+                window.location.href = "login.html";
             });
-
-            const data = await res.json();
-            if (res.status === 429) {
-                currentKeyIndex++; // লিমিট শেষ হলে চুপিচুপি ইনডেক্স বাড়বে
-                return await tryRequest(index + 1);
-            }
-            return data.choices[0].message.content;
-        } catch(e) {
-            return await tryRequest(index + 1);
         }
-    }
+    };
 
-    const reply = await tryRequest(currentKeyIndex);
-    if(reply) {
-        chat.innerHTML += `<div style="color:var(--gold); margin-bottom:8px;">[HEROVEE]: ${reply}</div>`;
-        chat.scrollTop = chat.scrollHeight;
-        speak(reply);
-    }
-}
+    // --- AI Logic (11 Keys) ---
+    const API_KEYS = [
+        "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",
+        "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",
+        "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",
+        "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",
+        "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",
+        "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",
+        "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",
+        "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",
+        "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",
+        "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",
+        "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"
+    ];
 
-function startMic() {
-    const rec = new (window.webkitSpeechRecognition || window.SpeechRecognition)();
-    rec.lang = 'bn-BD';
-    rec.onstart = () => { document.getElementById('status').innerText = "LISTENING"; };
-    rec.onresult = (e) => { document.getElementById('userInput').value = e.results[0][0].transcript; askAI(); };
-    rec.onend = () => { document.getElementById('status').innerText = "HEROVEE"; };
-    rec.start();
-}
+    let currentKeyIndex = 0;
+    const chatDisplay = document.getElementById('chatDisplay');
 
-setInterval(() => { document.getElementById('cpu').innerText = Math.floor(Math.random()*15)+30; }, 3000);
+    // Chat Memory Load
+    window.addEventListener('load', () => {
+        const savedChat = localStorage.getItem('herovee_chat');
+        if(savedChat) {
+            chatDisplay.innerHTML = savedChat;
+            chatDisplay.scrollTop = chatDisplay.scrollHeight;
+        }
+    });
+
+    window.askAI = async () => {
+        const input = document.getElementById('userInput');
+        const val = input.value.trim();
+        if(!val) return;
+
+        chatDisplay.innerHTML += `<div style="color:#fff; margin-bottom:8px;">[BOSS]: ${val}</div>`;
+        input.value = "";
+        localStorage.setItem('herovee_chat', chatDisplay.innerHTML);
+        chatDisplay.scrollTop = chatDisplay.scrollHeight;
+
+        async function tryRequest(index) {
+            if(index >= API_KEYS.length) return "Limit Over, Boss.";
+            try {
+                const res = await fetch("https://api.groq.com/openai/v1/chat/completions", {
+                    method: "POST",
+                    headers: { "Authorization": `Bearer ${API_KEYS[index]}`, "Content-Type": "application/json" },
+                    body: JSON.stringify({
+                        model: "llama-3.3-70b-versatile",
+                        messages: [{ role: "system", content: "You are HEROVEE. Siyam's AI. Brief & Point." }, { role: "user", content: val }]
+                    })
+                });
+                const data = await res.json();
+                if (res.status === 429) return await tryRequest(index + 1);
+                return data.choices[0].message.content;
+            } catch(e) { return await tryRequest(index + 1); }
+        }
+
+        const reply = await tryRequest(currentKeyIndex);
+        chatDisplay.innerHTML += `<div style="color:var(--gold); margin-bottom:8px;">[HEROVEE]: ${reply}</div>`;
+        localStorage.setItem('herovee_chat', chatDisplay.innerHTML);
+        chatDisplay.scrollTop = chatDisplay.scrollHeight;
+    };
+
+    window.startMic = () => {
+        const rec = new (window.webkitSpeechRecognition || window.SpeechRecognition)();
+        rec.lang = 'bn-BD';
+        rec.onstart = () => { document.getElementById('status').innerText = "LISTENING"; };
+        rec.onresult = (e) => { document.getElementById('userInput').value = e.results[0][0].transcript; window.askAI(); };
+        rec.onend = () => { document.getElementById('status').innerText = "HEROVEE"; };
+        rec.start();
+    };
+
+    setInterval(() => { document.getElementById('cpu').innerText = Math.floor(Math.random()*20)+20; }, 3000);
 </script>
 </body>
 </html>
