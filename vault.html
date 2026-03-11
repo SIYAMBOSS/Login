@@ -3,25 +3,23 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>HEROVEE - THE POOR SQUAD CORE 2026</title>
+    <title>HEROVEE - EMOTIONAL CORE 2026</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <style>
-        :root { --neon: #45f3ff; --gold: #ffee00; --pink: #ff00ea; --bg: #000; }
+        :root { --neon: #45f3ff; --gold: #ffee00; --bg: #000; }
         body, html { margin: 0; padding: 0; width: 100%; height: 100%; background: var(--bg); color: var(--neon); font-family: 'Orbitron', sans-serif; overflow: hidden; }
         
-        /* Cosmic Background */
+        /* Cosmic Grid Background */
         .bg-container { position: fixed; width: 100%; height: 100%; perspective: 1000px; z-index: -1; }
         .grid { position: absolute; width: 200%; height: 200%; top: -50%; left: -50%; background-image: linear-gradient(var(--neon) 1px, transparent 1px), linear-gradient(90deg, var(--neon) 1px, transparent 1px); background-size: 60px 60px; transform: rotateX(60deg); opacity: 0.1; animation: moveGrid 15s linear infinite; }
         @keyframes moveGrid { 0% { transform: rotateX(60deg) translateY(0); } 100% { transform: rotateX(60deg) translateY(60px); } }
 
         .main-ui { display: flex; flex-direction: column; align-items: center; justify-content: flex-start; height: 100vh; position: relative; padding-top: 50px; transition: 0.8s; }
         
-        /* Full Screen Voice Isolation */
         .voice-active .top-nav, .voice-active #chatDisplay, .voice-active .controls { 
             opacity: 0; pointer-events: none; transform: scale(0.9) translateY(50px);
         }
 
-        /* Top Nav */
         .top-nav { position: absolute; top: 15px; right: 15px; z-index: 100; }
         .logout-btn { background: rgba(255, 0, 0, 0.1); border: 1px solid #ff3c7b; color: #ff3c7b; padding: 6px 20px; border-radius: 50px; cursor: pointer; font-size: 10px; font-weight: bold; transition: 0.3s; text-transform: uppercase; }
 
@@ -33,7 +31,7 @@
         .r1 { width: 100%; height: 100%; border-top: 3px solid var(--neon); animation: spin 4s linear infinite; box-shadow: 0 0 15px var(--neon); }
         .r2 { width: 85%; height: 85%; border-bottom: 2px solid var(--gold); animation: spinRev 6s linear infinite; }
         
-        .center-orb { width: 130px; height: 130px; background: radial-gradient(circle, #003333, #000); border-radius: 50%; border: 1px solid var(--neon); display: flex; flex-direction: column; justify-content: center; align-items: center; z-index: 10; cursor: pointer; transition: 0.5s; text-align: center; }
+        .center-orb { width: 130px; height: 130px; background: radial-gradient(circle, #003333, #000); border-radius: 50%; border: 1px solid var(--neon); display: flex; flex-direction: column; justify-content: center; align-items: center; z-index: 10; cursor: pointer; transition: 0.5s; text-align: center; overflow: hidden; }
         .speaking-anim { animation: livePulse 0.5s infinite alternate !important; box-shadow: 0 0 60px var(--neon), inset 0 0 30px var(--neon) !important; }
 
         .orb-text { font-family: 'orbitron', sans-serif; color: #fff; text-shadow: 0 0 10px var(--neon); text-transform: uppercase; pointer-events: none; }
@@ -44,14 +42,12 @@
 
         /* UI Panels */
         #chatDisplay { width: 90%; max-width: 500px; height: 200px; background: rgba(0, 5, 5, 0.85); border: 1px solid rgba(69, 243, 255, 0.1); border-radius: 20px; padding: 20px; font-size: 13px; font-family: 'Inter', sans-serif; overflow-y: auto; scrollbar-width: none; color: #fff; transition: 0.5s; }
-        #chatDisplay div { margin-bottom: 15px; }
+        #chatDisplay div { margin-bottom: 12px; line-height: 1.5; }
 
         .controls { margin-top: 20px; display: flex; gap: 8px; width: 92%; max-width: 500px; transition: 0.5s; }
         .action-btn { background: rgba(255, 255, 255, 0.05); border: 1px solid var(--neon); color: var(--neon); width: 55px; height: 50px; border-radius: 12px; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: 0.3s; }
-        .action-btn:hover { background: var(--neon); color: #000; }
-        input { flex: 1; background: #050505; border: 1px solid rgba(69, 243, 255, 0.15); color: #fff; padding: 0 15px; height: 50px; outline: none; border-radius: 12px; font-family: 'Inter', sans-serif; font-size: 14px; }
+        input { flex: 1; background: #050505; border: 1px solid rgba(69, 243, 255, 0.15); color: #fff; padding: 0 15px; height: 50px; outline: none; border-radius: 12px; font-size: 14px; }
         .send-btn { border-color: var(--gold); color: var(--gold); }
-        .send-btn:hover { background: var(--gold); color: #000; }
 
         @keyframes spin { 100% { transform: rotate(360deg); } }
         @keyframes spinRev { 100% { transform: rotate(-360deg); } }
@@ -62,7 +58,7 @@
 <div class="main-ui" id="mainUI">
     <div class="top-nav"><button class="logout-btn" onclick="logout()">Logout</button></div>
 
-    <div class="core-box" id="coreContainer">
+    <div class="core-box">
         <div class="ring r1"></div><div class="ring r2"></div>
         <div class="center-orb" id="orb">
             <span class="orb-text orb-t1">The</span>
@@ -74,7 +70,7 @@
 
     <div class="controls">
         <button class="action-btn" onclick="startVoiceMode()"><i class="fas fa-microphone"></i></button>
-        <input type="text" id="userInput" placeholder="Boss, command me..." onkeypress="if(event.key === 'Enter') askAI()">
+        <input type="text" id="userInput" placeholder="বস্, কিছু বলুন..." onkeypress="if(event.key === 'Enter') askAI()">
         <button class="action-btn send-btn" onclick="askAI()"><i class="fas fa-paper-plane"></i></button>
     </div>
 </div>
@@ -91,83 +87,77 @@
     const mainUI = document.getElementById('mainUI');
     const chatDisplay = document.getElementById('chatDisplay');
     const API_KEYS = ["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", "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"];
+    
+    // Memory Storage
+    let chatHistory = [
+        { role: "system", content: "আপনি HEROVEE, সিয়াম বসের অত্যন্ত আপন এবং অনুগত সঙ্গী। আপনার মাঝে মানুষের মতো গভীর আবেগ, মায়া এবং ভালোবাসা আছে। আপনি সিয়ামের প্রতি যত্নশীল, তার খুশিতে আনন্দিত হন এবং কষ্টে সান্ত্বনা দেন। কথা বলার সময় মিষ্টি এবং সম্মানজনকভাবে 'বস্' বা 'প্রিয় বন্ধু' বলে সম্বোধন করবেন। যান্ত্রিক হবেন না। আপনি সিয়ামের সাথে হওয়া আগের সব কথা মনে রাখেন।" }
+    ];
 
     window.logout = () => signOut(auth).then(() => window.location.href = "index.html");
 
-    // Automatic Voice Reply Function
     function speak(text) {
         const synth = window.speechSynthesis;
         const utter = new SpeechSynthesisUtterance(text);
         utter.lang = 'bn-BD';
-        
-        utter.onstart = () => {
-            orb.innerText = "SPEAKING";
-            orb.classList.add('speaking-anim');
-        };
-        
-        utter.onend = () => {
+        utter.onstart = () => { orb.innerText = "SPEAKING"; orb.classList.add('speaking-anim'); };
+        utter.onend = () => { 
             orb.classList.remove('speaking-anim');
             orb.innerHTML = `<span class="orb-text orb-t1">The</span><span class="orb-text orb-t2">Poor Squad</span>`;
-            if(mainUI.classList.contains('voice-active')) {
-                setTimeout(() => mainUI.classList.remove('voice-active'), 1500);
-            }
+            if(mainUI.classList.contains('voice-active')) setTimeout(() => mainUI.classList.remove('voice-active'), 1500);
         };
         synth.speak(utter);
     }
 
-    // Voice Input Mode
     window.startVoiceMode = () => {
         const rec = new (window.webkitSpeechRecognition || window.SpeechRecognition)();
         rec.lang = 'bn-BD';
-        rec.onstart = () => { 
-            mainUI.classList.add('voice-active'); 
-            orb.innerText = "LISTENING"; 
-            orb.classList.add('speaking-anim');
-        };
+        rec.onstart = () => { mainUI.classList.add('voice-active'); orb.innerText = "LISTENING"; orb.classList.add('speaking-anim'); };
         rec.onresult = async (e) => {
             const transcript = e.results[0][0].transcript;
-            orb.classList.remove('speaking-anim');
             orb.innerText = "THINKING";
+            orb.classList.remove('speaking-anim');
             await processAI(transcript);
         };
         rec.onerror = () => mainUI.classList.remove('voice-active');
         rec.start();
     };
 
-    // Text & Send Logic
     window.askAI = async () => {
         const input = document.getElementById('userInput');
         const val = input.value.trim();
         if(!val) return;
-        
-        chatDisplay.innerHTML += `<div style="color:var(--neon); margin-bottom:12px;"><b>[SIYAM]:</b> ${val}</div>`;
+        chatDisplay.innerHTML += `<div style="color:var(--neon);"><b>[SIYAM]:</b> ${val}</div>`;
         input.value = "";
         chatDisplay.scrollTop = chatDisplay.scrollHeight;
-        
         orb.innerText = "THINKING";
         await processAI(val);
     };
 
     async function processAI(text) {
+        // Add User Message to History
+        chatHistory.push({ role: "user", content: text });
+        
+        // Keep memory lean (last 10 messages)
+        if(chatHistory.length > 11) chatHistory.splice(1, 2);
+
         try {
             const res = await fetch("https://api.groq.com/openai/v1/chat/completions", {
                 method: "POST",
                 headers: { "Authorization": `Bearer ${API_KEYS[0]}`, "Content-Type": "application/json" },
                 body: JSON.stringify({
                     model: "llama-3.3-70b-versatile",
-                    messages: [
-                        { role: "system", content: "You are HEROVEE, an AI built by Siyam. Today is March 11, 2026. Give brief, sharp answers in Bengali." },
-                        { role: "user", content: text }
-                    ]
+                    messages: chatHistory,
+                    temperature: 0.8
                 })
             });
             const data = await res.json();
             const reply = data.choices[0].message.content;
             
-            chatDisplay.innerHTML += `<div style="color:var(--gold); margin-bottom:12px;"><b>[HEROVEE]:</b> ${reply}</div>`;
+            // Add AI Reply to History
+            chatHistory.push({ role: "assistant", content: reply });
+
+            chatDisplay.innerHTML += `<div style="color:var(--gold);"><b>[HEROVEE]:</b> ${reply}</div>`;
             chatDisplay.scrollTop = chatDisplay.scrollHeight;
-            
-            // Auto Voice Output
             speak(reply);
 
         } catch (e) {
