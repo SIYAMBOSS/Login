@@ -10,7 +10,7 @@ body {
     justify-content: center;
     align-items: center;
     min-height: 100vh;
-    background: #1d1d1d; /* Dark background to make it pop */
+    background: #23242a;
 }
 
 .box {
@@ -22,7 +22,7 @@ body {
     overflow: hidden;
 }
 
-/* The Glowing Border Animation */
+/* বর্ডারের অ্যানিমেটেড গ্লো ইফেক্ট */
 .box::before {
     content: '';
     position: absolute;
@@ -30,7 +30,8 @@ body {
     left: -50%;
     width: 380px;
     height: 420px;
-    background: linear-gradient(0deg, transparent, #ff3c7b, #ff3c7b);
+    background: linear-gradient(0deg, transparent, transparent, #45f3ff, #45f3ff, #45f3ff);
+    z-index: 1;
     transform-origin: bottom right;
     animation: animate 6s linear infinite;
 }
@@ -42,10 +43,11 @@ body {
     left: -50%;
     width: 380px;
     height: 420px;
-    background: linear-gradient(0deg, transparent, #ff3c7b, #ff3c7b);
+    background: linear-gradient(0deg, transparent, transparent, #ff2770, #ff2770, #ff2770);
+    z-index: 1;
     transform-origin: bottom right;
     animation: animate 6s linear infinite;
-    animation-delay: -3s;
+    animation-delay: -3s; /* দ্বিতীয় রঙটি দেরিতে শুরু হবে */
 }
 
 @keyframes animate {
@@ -53,19 +55,19 @@ body {
     100% { transform: rotate(360deg); }
 }
 
-.loginBx {
+.form {
     position: absolute;
-    inset: 2px;
-    border-radius: 8px;
-    background: #28292d;
-    z-index: 10;
+    inset: 4px; /* বর্ডারের পুরুত্ব ঠিক করে */
+    background: #222;
     padding: 50px 40px;
+    border-radius: 8px;
+    z-index: 2;
     display: flex;
     flex-direction: column;
 }
 
 h2 {
-    color: #ff3c7b;
+    color: #fff;
     font-weight: 500;
     text-align: center;
     letter-spacing: 0.1em;
@@ -78,38 +80,77 @@ h2 {
 }
 
 .inputBx input {
+    position: relative;
     width: 100%;
-    padding: 10px;
+    padding: 20px 10px 10px;
     background: transparent;
-    border: none;
     outline: none;
-    color: #fff;
+    border: none;
+    box-shadow: none;
+    color: #23242a;
     font-size: 1em;
     letter-spacing: 0.05em;
-    border-bottom: 2px solid #ff3c7b;
+    transition: 0.5s;
+    z-index: 10;
 }
 
-.inputBx input[type="submit"] {
-    background: #ff3c7b;
+.inputBx span {
+    position: absolute;
+    left: 0;
+    padding: 20px 0px 10px;
+    pointer-events: none;
+    color: #8f8f8f;
+    font-size: 1em;
+    letter-spacing: 0.05em;
+    transition: 0.5s;
+}
+
+.inputBx input:valid ~ span,
+.inputBx input:focus ~ span {
     color: #fff;
-    cursor: pointer;
-    font-weight: 600;
+    font-size: 0.75em;
+    transform: translateY(-34px);
+}
+
+.inputBx i {
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    height: 2px;
+    background: #fff;
     border-radius: 4px;
+    overflow: hidden;
+    transition: 0.5s;
+    pointer-events: none;
+}
+
+.inputBx input:valid ~ i,
+.inputBx input:focus ~ i {
+    height: 44px;
+}
+
+input[type="submit"] {
+    border: none;
+    outline: none;
+    padding: 9px 25px;
+    background: #fff;
+    cursor: pointer;
+    font-size: 0.9em;
+    border-radius: 4px;
+    font-weight: 600;
+    width: 100px;
     margin-top: 10px;
 }
 
-.group {
+.links {
     display: flex;
     justify-content: space-between;
-    margin-top: 20px;
 }
 
-.group a {
+.links a {
+    margin: 10px 0;
     font-size: 0.75em;
     color: #8f8f8f;
     text-decoration: none;
-}
-
-.group a:nth-child(2) {
-    color: #ff3c7b;
 }
