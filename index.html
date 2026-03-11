@@ -3,19 +3,19 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>HEROVEE AI - BOSS MODE</title>
+    <title>HEROVEE AI - NEW API MODE</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
         * { box-sizing: border-box; }
-        body { background: #000; color: #fff; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; overflow: hidden; }
-        .ai-container { width: 95%; max-width: 450px; background: #0d0d0d; padding: 25px; border-radius: 30px; border: 1px solid #45f3ff44; box-shadow: 0 0 30px #45f3ff15; text-align: center; }
-        .status { font-size: 11px; color: #45f3ff; margin-bottom: 15px; text-transform: uppercase; letter-spacing: 2px; font-weight: bold; }
-        #aiChatBox { height: 350px; overflow-y: auto; background: #050505; border-radius: 20px; padding: 20px; margin-bottom: 20px; text-align: left; font-size: 15px; border: 1px solid #222; scroll-behavior: smooth; }
-        .user-msg { color: #fff; margin-bottom: 12px; background: #1a1a1a; padding: 10px 15px; border-radius: 15px 15px 0 15px; align-self: flex-end; border-right: 3px solid #45f3ff; }
-        .ai-msg { color: #ffee00; margin-bottom: 12px; background: #1a1a1a; padding: 10px 15px; border-radius: 15px 15px 15px 0; border-left: 3px solid #ffee00; }
+        body { background: #000; color: #fff; font-family: 'Segoe UI', sans-serif; display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; overflow: hidden; }
+        .ai-container { width: 95%; max-width: 450px; background: #0a0a0a; padding: 25px; border-radius: 30px; border: 1px solid #45f3ff33; box-shadow: 0 0 40px #45f3ff10; text-align: center; }
+        .status { font-size: 10px; color: #45f3ff; margin-bottom: 15px; text-transform: uppercase; letter-spacing: 2px; font-weight: bold; opacity: 0.8; }
+        #aiChatBox { height: 380px; overflow-y: auto; background: #050505; border-radius: 20px; padding: 20px; margin-bottom: 20px; text-align: left; font-size: 15px; border: 1px solid #1a1a1a; scroll-behavior: smooth; }
+        .user-msg { color: #fff; margin-bottom: 12px; background: #1a1a1a; padding: 10px 15px; border-radius: 18px 18px 0 18px; align-self: flex-end; border-right: 3px solid #45f3ff; }
+        .ai-msg { color: #ffee00; margin-bottom: 12px; background: #1a1a1a; padding: 10px 15px; border-radius: 18px 18px 18px 0; border-left: 3px solid #ffee00; }
         .input-area { display: flex; gap: 12px; align-items: center; }
-        input { flex: 1; background: #1a1a1a; border: 1px solid #333; color: #fff; padding: 14px 20px; border-radius: 50px; outline: none; font-size: 14px; }
-        input:focus { border-color: #45f3ff; }
+        input { flex: 1; background: #111; border: 1px solid #333; color: #fff; padding: 14px 20px; border-radius: 50px; outline: none; font-size: 14px; transition: 0.3s; }
+        input:focus { border-color: #45f3ff; background: #1a1a1a; }
         button { background: #45f3ff; border: none; width: 50px; height: 50px; border-radius: 50%; cursor: pointer; color: #000; transition: 0.3s; display: flex; justify-content: center; align-items: center; font-size: 18px; }
         button:hover { transform: scale(1.1); box-shadow: 0 0 15px #45f3ff; }
         .mic-btn { background: #ffee00; }
@@ -26,29 +26,26 @@
 <body>
 
 <div class="ai-container">
-    <div class="status">HEROVEE AI • ONLINE • BOSS: SIYAM</div>
+    <div class="status">HEROVEE AI • API UPDATED • BOSS: SIYAM</div>
     <div id="aiChatBox">
-        <div class="ai-msg">হ্যালো সিয়াম বস্! আমি HEROVEE। আমি আপনার কথা শুনতে এবং বলতে পারি।</div>
+        <div class="ai-msg">হ্যালো সিয়াম বস্! নতুন এপিআই কানেক্টেড। আমি আপনার জন্য কী করতে পারি?</div>
     </div>
     
     <div class="input-area">
         <button id="micBtn" class="mic-btn" onclick="startListening()"><i class="fas fa-microphone"></i></button>
-        <input type="text" id="aiInput" placeholder="Type or Speak to HEROVEE..." onkeypress="if(event.key === 'Enter') askAI()">
+        <input type="text" id="aiInput" placeholder="HEROVEE-এর সাথে কথা বলুন..." onkeypress="if(event.key === 'Enter') askAI()">
         <button onclick="askAI()"><i class="fas fa-paper-plane"></i></button>
     </div>
 </div>
 
 <script>
-// আপনার Groq API Key
-const GROQ_API_KEY = "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";
+// নতুন Groq API Key আপডেট করা হয়েছে
+const GROQ_API_KEY = "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";
 
-// ১. সুন্দরী ফিমেইল ভয়েস আউটপুট
 function speak(text) {
     const synth = window.speechSynthesis;
     const utterance = new SpeechSynthesisUtterance(text);
     const voices = synth.getVoices();
-    
-    // বাংলা টেক্সট কি না চেক করা
     const isBengali = /[\u0980-\u09FF]/.test(text);
     
     if (isBengali) {
@@ -66,7 +63,6 @@ function speak(text) {
     synth.speak(utterance);
 }
 
-// ২. Groq AI লজিক
 async function askAI() {
     const inputField = document.getElementById('aiInput');
     const userInput = inputField.value.trim();
@@ -89,7 +85,7 @@ async function askAI() {
                 messages: [
                     { 
                         role: "system", 
-                        content: "You are HEROVEE, a beautiful, sweet, and loyal female AI assistant for your boss Siyam. You speak both Bengali and English perfectly. If Siyam speaks in Bengali, reply in Bengali. Keep answers short and charming." 
+                        content: "You are HEROVEE, a beautiful and smart female AI assistant. Your boss is Siyam. Speak in Bengali or English based on his choice. Keep responses charming and helpful." 
                     },
                     { role: "user", content: userInput }
                 ]
@@ -101,20 +97,16 @@ async function askAI() {
         
         chatBox.innerHTML += `<div class="ai-msg"><b>HEROVEE:</b> ${aiMsg}</div>`;
         chatBox.scrollTop = chatBox.scrollHeight;
-        
         speak(aiMsg);
 
     } catch (error) {
-        chatBox.innerHTML += `<div style="color: #ff3c7b;">Error: API কানেকশন হচ্ছে না বস্!</div>`;
+        chatBox.innerHTML += `<div style="color: #ff3c7b;">Error: API কানেকশনে সমস্যা হচ্ছে বস্!</div>`;
     }
 }
 
-// ৩. ভয়েস রিকগনিশন (Mic)
 function startListening() {
     const recognition = new (window.SpeechRecognition || window.webkitSpeechRecognition)();
     const micBtn = document.getElementById('micBtn');
-    
-    // অটো ডিটেকশনের জন্য বা বসের সুবিধার জন্য ডিফল্ট বাংলা রাখা হয়েছে
     recognition.lang = 'bn-BD'; 
 
     recognition.onstart = () => {
@@ -134,14 +126,10 @@ function startListening() {
         document.getElementById('aiInput').placeholder = "আবার চেষ্টা করুন...";
     };
 
-    recognition.onend = () => {
-        micBtn.classList.remove('listening');
-    };
-    
+    recognition.onend = () => micBtn.classList.remove('listening');
     recognition.start();
 }
 
-// ভয়েস লোড হওয়ার হ্যাক
 window.speechSynthesis.onvoiceschanged = () => { window.speechSynthesis.getVoices(); };
 </script>
 
