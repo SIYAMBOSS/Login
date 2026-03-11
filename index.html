@@ -3,45 +3,85 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>HEROVEE AI - NEW API MODE</title>
+    <title>HEROVEE AI - ANIMATED MODE</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
         * { box-sizing: border-box; }
-        body { background: #000; color: #fff; font-family: 'Segoe UI', sans-serif; display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; overflow: hidden; }
-        .ai-container { width: 95%; max-width: 450px; background: #0a0a0a; padding: 25px; border-radius: 30px; border: 1px solid #45f3ff33; box-shadow: 0 0 40px #45f3ff10; text-align: center; }
-        .status { font-size: 10px; color: #45f3ff; margin-bottom: 15px; text-transform: uppercase; letter-spacing: 2px; font-weight: bold; opacity: 0.8; }
-        #aiChatBox { height: 380px; overflow-y: auto; background: #050505; border-radius: 20px; padding: 20px; margin-bottom: 20px; text-align: left; font-size: 15px; border: 1px solid #1a1a1a; scroll-behavior: smooth; }
-        .user-msg { color: #fff; margin-bottom: 12px; background: #1a1a1a; padding: 10px 15px; border-radius: 18px 18px 0 18px; align-self: flex-end; border-right: 3px solid #45f3ff; }
-        .ai-msg { color: #ffee00; margin-bottom: 12px; background: #1a1a1a; padding: 10px 15px; border-radius: 18px 18px 18px 0; border-left: 3px solid #ffee00; }
-        .input-area { display: flex; gap: 12px; align-items: center; }
-        input { flex: 1; background: #111; border: 1px solid #333; color: #fff; padding: 14px 20px; border-radius: 50px; outline: none; font-size: 14px; transition: 0.3s; }
-        input:focus { border-color: #45f3ff; background: #1a1a1a; }
-        button { background: #45f3ff; border: none; width: 50px; height: 50px; border-radius: 50%; cursor: pointer; color: #000; transition: 0.3s; display: flex; justify-content: center; align-items: center; font-size: 18px; }
-        button:hover { transform: scale(1.1); box-shadow: 0 0 15px #45f3ff; }
+        body { background: #050505; color: #fff; font-family: 'Segoe UI', sans-serif; display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; overflow: hidden; }
+        .ai-container { width: 95%; max-width: 450px; background: #0d0d0d; padding: 20px; border-radius: 30px; border: 1px solid #45f3ff33; text-align: center; position: relative; }
+        
+        /* অবতার এনিমেশন স্টাইল */
+        .avatar-box { width: 120px; height: 120px; margin: 0 auto 15px; background: #111; border-radius: 50%; border: 2px solid #45f3ff; display: flex; justify-content: center; align-items: center; overflow: hidden; position: relative; box-shadow: 0 0 20px #45f3ff33; }
+        .circle-ring { position: absolute; width: 100%; height: 100%; border: 2px solid transparent; border-top-color: #45f3ff; border-radius: 50%; animation: spin 2s linear infinite; display: none; }
+        .avatar-box.talking .circle-ring { display: block; }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+        
+        #aiChatBox { height: 280px; overflow-y: auto; background: #000; border-radius: 20px; padding: 15px; margin-bottom: 20px; text-align: left; font-size: 14px; border: 1px solid #222; }
+        .user-msg { color: #fff; margin-bottom: 10px; background: #1a1a1a; padding: 8px 12px; border-radius: 15px 15px 0 15px; border-right: 3px solid #45f3ff; text-align: right; }
+        .ai-msg { color: #ffee00; margin-bottom: 10px; background: #1a1a1a; padding: 8px 12px; border-radius: 15px 15px 15px 0; border-left: 3px solid #ffee00; }
+        
+        .input-area { display: flex; gap: 10px; }
+        input { flex: 1; background: #111; border: 1px solid #333; color: #fff; padding: 12px 20px; border-radius: 50px; outline: none; }
+        button { background: #45f3ff; border: none; width: 45px; height: 45px; border-radius: 50%; cursor: pointer; color: #000; font-size: 18px; }
         .mic-btn { background: #ffee00; }
         .mic-btn.listening { background: #ff3c7b; animation: pulse 1s infinite; }
-        @keyframes pulse { 0% { box-shadow: 0 0 0 0 rgba(255, 60, 123, 0.7); } 70% { box-shadow: 0 0 0 15px rgba(255, 60, 123, 0); } 100% { box-shadow: 0 0 0 0 rgba(255, 60, 123, 0); } }
     </style>
 </head>
 <body>
 
 <div class="ai-container">
-    <div class="status">HEROVEE AI • API UPDATED • BOSS: SIYAM</div>
+    <div class="status" style="font-size: 10px; color: #45f3ff; margin-bottom: 10px;">HEROVEE LIVE AVATAR</div>
+    
+    <div class="avatar-box" id="avatarBox">
+        <div class="circle-ring"></div>
+        <svg viewBox="0 0 100 100" width="80">
+            <circle cx="50" cy="50" r="45" fill="#1a1a1a" stroke="#45f3ff" stroke-width="2"/>
+            <circle cx="35" cy="40" r="3" fill="#45f3ff" id="leftEye"/>
+            <circle cx="65" cy="40" r="3" fill="#45f3ff" id="rightEye"/>
+            <path d="M 35 65 Q 50 65 65 65" stroke="#ffee00" stroke-width="3" fill="transparent" id="mouth"/>
+        </svg>
+    </div>
+
     <div id="aiChatBox">
-        <div class="ai-msg">হ্যালো সিয়াম বস্! নতুন এপিআই কানেক্টেড। আমি আপনার জন্য কী করতে পারি?</div>
+        <div class="ai-msg">হ্যালো সিয়াম বস্! আমি আপনার কথা শোনার জন্য রেডি।</div>
     </div>
     
     <div class="input-area">
         <button id="micBtn" class="mic-btn" onclick="startListening()"><i class="fas fa-microphone"></i></button>
-        <input type="text" id="aiInput" placeholder="HEROVEE-এর সাথে কথা বলুন..." onkeypress="if(event.key === 'Enter') askAI()">
+        <input type="text" id="aiInput" placeholder="HEROVEE-কে কিছু বলুন..." onkeypress="if(event.key === 'Enter') askAI()">
         <button onclick="askAI()"><i class="fas fa-paper-plane"></i></button>
     </div>
 </div>
 
 <script>
-// নতুন Groq API Key আপডেট করা হয়েছে
 const GROQ_API_KEY = "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";
 
+// ১. এনিমেশন লজিক (চোখের পলক ও মুখ)
+setInterval(() => {
+    const leftEye = document.getElementById('leftEye');
+    const rightEye = document.getElementById('rightEye');
+    leftEye.setAttribute('r', '0.5'); rightEye.setAttribute('r', '0.5');
+    setTimeout(() => { leftEye.setAttribute('r', '3'); rightEye.setAttribute('r', '3'); }, 200);
+}, 4000);
+
+function animateMouth(isTalking) {
+    const mouth = document.getElementById('mouth');
+    const avatarBox = document.getElementById('avatarBox');
+    if (isTalking) {
+        avatarBox.classList.add('talking');
+        let state = true;
+        window.mouthInterval = setInterval(() => {
+            mouth.setAttribute('d', state ? "M 35 65 Q 50 75 65 65" : "M 35 65 Q 50 65 65 65");
+            state = !state;
+        }, 150);
+    } else {
+        avatarBox.classList.remove('talking');
+        clearInterval(window.mouthInterval);
+        mouth.setAttribute('d', "M 35 65 Q 50 65 65 65");
+    }
+}
+
+// ২. ভয়েস ও AI লজিক
 function speak(text) {
     const synth = window.speechSynthesis;
     const utterance = new SpeechSynthesisUtterance(text);
@@ -49,17 +89,19 @@ function speak(text) {
     const isBengali = /[\u0980-\u09FF]/.test(text);
     
     if (isBengali) {
-        const bnVoice = voices.find(v => v.lang.includes('bn') || v.name.includes('Bangladesh') || v.name.includes('India'));
+        const bnVoice = voices.find(v => v.lang.includes('bn'));
         if (bnVoice) utterance.voice = bnVoice;
         utterance.lang = 'bn-BD';
     } else {
-        const enVoice = voices.find(v => v.name.includes('Female') || v.name.includes('Google UK English Female') || v.name.includes('Zira'));
+        const enVoice = voices.find(v => v.name.includes('Female'));
         if (enVoice) utterance.voice = enVoice;
         utterance.lang = 'en-US';
     }
+
+    utterance.onstart = () => animateMouth(true);
+    utterance.onend = () => animateMouth(false);
     
     utterance.pitch = 1.3;
-    utterance.rate = 1.0;
     synth.speak(utterance);
 }
 
@@ -69,69 +111,37 @@ async function askAI() {
     if (!userInput) return;
 
     const chatBox = document.getElementById('aiChatBox');
-    chatBox.innerHTML += `<div class="user-msg"><b>Boss:</b> ${userInput}</div>`;
+    chatBox.innerHTML += `<div class="user-msg">${userInput}</div>`;
     inputField.value = "";
     chatBox.scrollTop = chatBox.scrollHeight;
 
     try {
         const response = await fetch("https://api.groq.com/openai/v1/chat/completions", {
             method: "POST",
-            headers: {
-                "Authorization": `Bearer ${GROQ_API_KEY}`,
-                "Content-Type": "application/json"
-            },
+            headers: { "Authorization": `Bearer ${GROQ_API_KEY}`, "Content-Type": "application/json" },
             body: JSON.stringify({
                 model: "llama3-8b-8192",
-                messages: [
-                    { 
-                        role: "system", 
-                        content: "You are HEROVEE, a beautiful and smart female AI assistant. Your boss is Siyam. Speak in Bengali or English based on his choice. Keep responses charming and helpful." 
-                    },
-                    { role: "user", content: userInput }
-                ]
+                messages: [{ role: "system", content: "You are HEROVEE, a cute animated female assistant for Siyam Boss. Keep replies sweet and brief." }, { role: "user", content: userInput }]
             })
         });
-
         const data = await response.json();
         const aiMsg = data.choices[0].message.content;
-        
         chatBox.innerHTML += `<div class="ai-msg"><b>HEROVEE:</b> ${aiMsg}</div>`;
         chatBox.scrollTop = chatBox.scrollHeight;
         speak(aiMsg);
-
-    } catch (error) {
-        chatBox.innerHTML += `<div style="color: #ff3c7b;">Error: API কানেকশনে সমস্যা হচ্ছে বস্!</div>`;
-    }
+    } catch (e) { chatBox.innerHTML += `<div style="color:red">Error Boss!</div>`; }
 }
 
 function startListening() {
     const recognition = new (window.SpeechRecognition || window.webkitSpeechRecognition)();
     const micBtn = document.getElementById('micBtn');
-    recognition.lang = 'bn-BD'; 
-
-    recognition.onstart = () => {
-        micBtn.classList.add('listening');
-        document.getElementById('aiInput').placeholder = "শুনছি বস্...";
-    };
-
-    recognition.onresult = (event) => {
-        const transcript = event.results[0][0].transcript;
-        document.getElementById('aiInput').value = transcript;
-        micBtn.classList.remove('listening');
-        askAI();
-    };
-
-    recognition.onerror = () => {
-        micBtn.classList.remove('listening');
-        document.getElementById('aiInput').placeholder = "আবার চেষ্টা করুন...";
-    };
-
-    recognition.onend = () => micBtn.classList.remove('listening');
+    recognition.lang = 'bn-BD';
+    recognition.onstart = () => { micBtn.classList.add('listening'); };
+    recognition.onresult = (e) => { document.getElementById('aiInput').value = e.results[0][0].transcript; askAI(); };
+    recognition.onend = () => { micBtn.classList.remove('listening'); };
     recognition.start();
 }
-
 window.speechSynthesis.onvoiceschanged = () => { window.speechSynthesis.getVoices(); };
 </script>
-
 </body>
 </html>
