@@ -3,55 +3,56 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>HEROVEE - OpenAI Tester</title>
+    <title>HEROVEE - Groq AI</title>
     <style>
-        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #f4f7f6; display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; }
-        .container { background: white; padding: 30px; border-radius: 12px; box-shadow: 0 10px 25px rgba(0,0,0,0.1); width: 400px; text-align: center; }
-        h2 { color: #333; margin-bottom: 20px; }
-        input, textarea { width: 100%; padding: 12px; margin-bottom: 15px; border: 1px solid #ddd; border-radius: 8px; box-sizing: border-box; }
-        button { width: 100%; padding: 12px; background-color: #007bff; color: white; border: none; border-radius: 8px; cursor: pointer; font-size: 16px; transition: 0.3s; }
-        button:hover { background-color: #0056b3; }
-        #response { margin-top: 20px; padding: 15px; background: #e9ecef; border-radius: 8px; min-height: 50px; text-align: left; font-size: 14px; white-space: pre-wrap; }
-        .loader { display: none; margin: 10px auto; border: 4px solid #f3f3f3; border-top: 4px solid #3498db; border-radius: 50%; width: 24px; height: 24px; animation: spin 2s linear infinite; }
+        body { font-family: 'Segoe UI', Arial, sans-serif; background-color: #0f172a; display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; color: white; }
+        .container { background: #1e293b; padding: 30px; border-radius: 15px; box-shadow: 0 10px 30px rgba(0,0,0,0.5); width: 90%; max-width: 450px; text-align: center; border: 1px solid #334155; }
+        h2 { color: #38bdf8; margin-bottom: 20px; font-size: 24px; }
+        input, textarea { width: 100%; padding: 12px; margin-bottom: 15px; border: 1px solid #334155; border-radius: 8px; box-sizing: border-box; background: #0f172a; color: white; outline: none; }
+        input:focus, textarea:focus { border-color: #38bdf8; }
+        button { width: 100%; padding: 12px; background-color: #38bdf8; color: #0f172a; border: none; border-radius: 8px; cursor: pointer; font-weight: bold; font-size: 16px; transition: 0.3s; }
+        button:hover { background-color: #0ea5e9; transform: translateY(-2px); }
+        #response { margin-top: 20px; padding: 15px; background: #334155; border-radius: 8px; min-height: 60px; text-align: left; font-size: 14px; white-space: pre-wrap; line-height: 1.5; border-left: 4px solid #38bdf8; }
+        .loader { display: none; margin: 15px auto; border: 3px solid #f3f3f3; border-top: 3px solid #38bdf8; border-radius: 50%; width: 20px; height: 20px; animation: spin 1s linear infinite; }
         @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
     </style>
 </head>
 <body>
 
 <div class="container">
-    <h2>HEROVEE AI Test</h2>
-    <input type="password" id="apiKey" placeholder="আপনার OpenAI API Key দিন" value="">
-    <textarea id="userInput" rows="3" placeholder="এখানে কিছু লিখুন..."></textarea>
-    <button onclick="askAI()">টেস্ট শুরু করুন</button>
+    <h2>HEROVEE Groq AI</h2>
+    <input type="password" id="apiKey" placeholder="Groq API Key দিন" value="">
+    <textarea id="userInput" rows="4" placeholder="AI-কে কিছু জিজ্ঞেস করুন..."></textarea>
+    <button onclick="askGroq()">মেসেজ পাঠান</button>
     
     <div class="loader" id="loader"></div>
-    <div id="response">রেসপন্স এখানে দেখা যাবে...</div>
+    <div id="response">উত্তর এখানে দেখা যাবে...</div>
 </div>
 
 <script>
-    async function askAI() {
-        const apiKey = document.getElementById('apiKey').value;
+    async function askGroq() {
+        const apiKey = document.getElementById('apiKey').value || "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";
         const userInput = document.getElementById('userInput').value;
         const responseDiv = document.getElementById('response');
         const loader = document.getElementById('loader');
 
-        if (!apiKey || !userInput) {
-            alert("দয়া করে API Key এবং আপনার প্রশ্ন লিখুন!");
+        if (!userInput) {
+            alert("কিছু তো লিখুন!");
             return;
         }
 
-        responseDiv.innerText = "লোডিং...";
+        responseDiv.innerText = "Groq চিন্তা করছে...";
         loader.style.display = "block";
 
         try {
-            const response = await fetch('https://api.openai.com/v1/chat/completions', {
+            const response = await fetch('https://api.groq.com/openai/v1/chat/completions', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
                     'Authorization': `Bearer ${apiKey}`
                 },
                 body: JSON.stringify({
-                    model: "gpt-3.5-turbo",
+                    model: "llama-3.3-70b-versatile",
                     messages: [{ role: "user", content: userInput }]
                 })
             });
@@ -62,7 +63,7 @@
             if (data.choices && data.choices[0]) {
                 responseDiv.innerText = data.choices[0].message.content;
             } else {
-                responseDiv.innerText = "ভুল হয়েছে: " + (data.error ? data.error.message : "অজানা সমস্যা");
+                responseDiv.innerText = "Error: " + (data.error ? data.error.message : "সমস্যা হয়েছে।");
             }
         } catch (error) {
             loader.style.display = "none";
