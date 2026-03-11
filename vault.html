@@ -3,85 +3,79 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>HEROVEE - ULTIMATE CORE 2026</title>
+    <title>HEROVEE - THE POOR SQUAD CORE</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <style>
-        :root { --neon: #45f3ff; --gold: #ffee00; --bg: #000; }
+        :root { --neon: #45f3ff; --gold: #ffee00; --pink: #ff00ea; --bg: #000; }
         body, html { margin: 0; padding: 0; width: 100%; height: 100%; background: var(--bg); color: var(--neon); font-family: 'Orbitron', sans-serif; overflow: hidden; }
         
-        /* UI Layout */
-        .main-ui { display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100vh; transition: 0.8s; }
+        /* Cosmic Grid Background */
+        .bg-container { position: fixed; width: 100%; height: 100%; perspective: 1000px; z-index: -1; }
+        .grid { position: absolute; width: 200%; height: 200%; top: -50%; left: -50%; background-image: linear-gradient(var(--neon) 1px, transparent 1px), linear-gradient(90deg, var(--neon) 1px, transparent 1px); background-size: 60px 60px; transform: rotateX(60deg); opacity: 0.1; animation: moveGrid 15s linear infinite; }
+        @keyframes moveGrid { 0% { transform: rotateX(60deg) translateY(0); } 100% { transform: rotateX(60deg) translateY(60px); } }
+
+        .main-ui { display: flex; flex-direction: column; align-items: center; justify-content: flex-start; height: 100vh; position: relative; padding-top: 10%; transition: 0.8s; }
         
-        /* Full Screen Voice Isolation */
+        /* Strict Multimodal UI isolation */
         .voice-active .top-nav, .voice-active #chatDisplay, .voice-active .controls { 
-            opacity: 0; pointer-events: none; transform: scale(0.9);
+            opacity: 0; pointer-events: none; transform: scale(0.9) translateY(50px);
         }
 
-        /* The Orb Container */
-        .core-box { 
-            position: relative; width: 220px; height: 220px; 
-            display: flex; justify-content: center; align-items: center; 
-            transition: 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            z-index: 1000;
-        }
+        /* Top Nav - LOGOUT in extreme top right */
+        .top-nav { position: absolute; top: 15px; right: 15px; z-index: 100; }
+        .logout-btn { background: rgba(255, 0, 0, 0.1); border: 1px solid #ff3c7b; color: #ff3c7b; padding: 6px 20px; border-radius: 50px; cursor: pointer; font-size: 10px; font-weight: bold; transition: 0.3s; text-transform: uppercase; letter-spacing: 1px; }
+        .logout-btn:hover { background: #ff3c7b; color: #000; box-shadow: 0 0 15px #ff3c7b; }
 
+        /* The POOR SQUAD Orbit Core */
+        .core-box { position: relative; width: 280px; height: 280px; display: flex; justify-content: center; align-items: center; z-index: 10; transition: 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
         .voice-active .core-box { transform: scale(1.6); }
 
         .ring { position: absolute; border-radius: 50%; border: 2px solid transparent; }
-        .r1 { width: 100%; height: 100%; border-top: 3px solid var(--neon); animation: spin 3s linear infinite; }
-        .r2 { width: 85%; height: 85%; border-bottom: 2px solid var(--gold); animation: spinRev 5s linear infinite; }
+        .r1 { width: 100%; height: 100%; border-top: 3px solid var(--neon); animation: spin 4s linear infinite; box-shadow: 0 0 15px var(--neon); }
+        .r2 { width: 85%; height: 85%; border-bottom: 2px solid var(--gold); animation: spinRev 6s linear infinite; }
         
-        .center-orb { 
-            width: 100px; height: 100px; 
-            background: radial-gradient(circle, #004444, #000); 
-            border-radius: 50%; border: 1px solid var(--neon); 
-            display: flex; justify-content: center; align-items: center; 
-            box-shadow: 0 0 20px rgba(69, 243, 255, 0.4);
-            font-size: 10px; cursor: pointer; transition: 0.5s; text-align: center; padding: 5px;
-        }
+        .center-orb { width: 130px; height: 130px; background: radial-gradient(circle, #003333, #000); border-radius: 50%; border: 1px solid var(--neon); display: flex; flex-direction: column; justify-content: center; align-items: center; z-index: 10; cursor: pointer; transition: 0.5s; text-align: center; }
+        .speaking-anim { animation: livePulse 0.5s infinite alternate !important; box-shadow: 0 0 60px var(--neon), inset 0 0 30px var(--neon) !important; }
 
-        /* Speaking Animation (Wave effect) */
-        .speaking-anim { 
-            animation: livePulse 0.5s infinite alternate !important; 
-            box-shadow: 0 0 60px var(--neon), inset 0 0 30px var(--neon) !important;
-        }
+        .orb-text { font-family: 'orbitron', sans-serif; color: #fff; text-shadow: 0 0 10px var(--neon); text-transform: uppercase; }
+        .orb-t1 { font-size: 14px; font-weight: 900; letter-spacing: 1px; }
+        .orb-t2 { font-size: 11px; margin-top: 3px; font-weight: 600; }
 
-        @keyframes livePulse {
-            from { transform: scale(1); filter: brightness(1); }
-            to { transform: scale(1.1); filter: brightness(1.5); }
-        }
+        @keyframes livePulse { from { transform: scale(1); filter: brightness(1); } to { transform: scale(1.1); filter: brightness(1.5); } }
 
-        /* Interface Elements */
-        #chatDisplay { width: 90%; max-width: 480px; height: 180px; margin-top: 30px; background: rgba(0,10,10,0.8); border: 1px solid rgba(69,243,255,0.1); border-radius: 20px; padding: 15px; font-size: 12px; overflow-y: auto; color: #fff; transition: 0.5s; font-family: 'Inter'; }
+        /* Multimodal UI Panels - Positioned well below the orb */
+        #chatDisplay { width: 90%; max-width: 500px; height: 200px; margin-top: 50px; overflow-y: auto; background: rgba(0, 5, 5, 0.85); border: 1px solid rgba(69, 243, 255, 0.1); border-radius: 20px; padding: 20px; font-size: 13px; font-family: 'Inter', sans-serif; scrollbar-width: none; line-height: 1.6; transition: 0.5s; color: #fff; }
+        #chatDisplay div { margin-bottom: 15px; }
 
-        .controls { margin-top: 20px; display: flex; gap: 8px; width: 92%; max-width: 480px; transition: 0.5s; }
-        input { flex: 1; background: #0a0a0a; border: 1px solid #333; color: #fff; padding: 14px; border-radius: 12px; outline: none; }
-        .action-btn { background: none; border: 1px solid var(--neon); color: var(--neon); width: 50px; border-radius: 12px; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: 0.3s; }
+        .controls { margin-top: 20px; display: flex; gap: 8px; width: 92%; max-width: 500px; transition: 0.5s; }
+        .action-btn { background: rgba(255, 255, 255, 0.05); border: 1px solid var(--neon); color: var(--neon); padding: 12px 18px; border-radius: 12px; cursor: pointer; transition: 0.3s; }
         .action-btn:hover { background: var(--neon); color: #000; }
+        input { flex: 1; background: #050505; border: 1px solid rgba(69, 243, 255, 0.15); color: #fff; padding: 15px; outline: none; border-radius: 12px; font-family: 'Inter', sans-serif; font-size: 14px; }
         .send-btn { border-color: var(--gold); color: var(--gold); }
-        .send-btn:hover { background: var(--gold); color: #000; }
+        .send-btn:hover { background: var(--gold); color: #000; box-shadow: 0 0 15px var(--gold); }
 
         @keyframes spin { 100% { transform: rotate(360deg); } }
         @keyframes spinRev { 100% { transform: rotate(-360deg); } }
     </style>
 </head>
 <body>
-
+<div class="bg-container"><div class="grid"></div></div>
 <div class="main-ui" id="mainUI">
-    <div class="top-nav" style="position:absolute; top:5%;">
-        <button onclick="logout()" style="background:none; border:1px solid red; color:red; padding:6px 20px; border-radius:50px; font-size:10px; cursor:pointer; font-weight: bold;">TERMINATE SESSION</button>
-    </div>
+    <div class="top-nav"><button class="logout-btn" id="logoutBtn">Logout</button></div>
 
     <div class="core-box" id="coreContainer">
         <div class="ring r1"></div><div class="ring r2"></div>
-        <div class="center-orb" id="orb">HEROVEE</div>
+        <div class="center-orb" id="orb">
+            <span class="orb-text orb-t1">The</span>
+            <span class="orb-text orb-t2">Poor Squad</span>
+        </div>
     </div>
 
     <div id="chatDisplay"></div>
 
     <div class="controls">
         <button class="action-btn" onclick="startVoiceMode()"><i class="fas fa-microphone"></i></button>
-        <input type="text" id="userInput" placeholder="Boss, command me..." onkeypress="if(event.key === 'Enter') askAI()">
+        <input type="text" id="userInput" placeholder="Drop command, Boss Siyam..." onkeypress="if(event.key === 'Enter') askAI()">
         <button class="action-btn send-btn" onclick="askAI()"><i class="fas fa-paper-plane"></i></button>
     </div>
 </div>
@@ -99,58 +93,52 @@
     const chatDisplay = document.getElementById('chatDisplay');
     const API_KEYS = ["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", "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"];
 
-    window.logout = () => signOut(auth).then(() => window.location.href = "index.html");
+    document.getElementById('logoutBtn').onclick = () => signOut(auth).then(() => { localStorage.clear(); window.location.href = "index.html"; });
 
-    // এআই-এর কথা বলা (Text to Speech)
+    // Text to Speech
     function speak(text) {
         const synth = window.speechSynthesis;
         const utter = new SpeechSynthesisUtterance(text);
         utter.lang = 'bn-BD';
-        utter.onstart = () => {
-            orb.innerText = "SPEAKING";
-            orb.classList.add('speaking-anim');
-        };
-        utter.onend = () => {
+        utter.onstart = () => { orb.innerText = "SPEAKING"; orb.classList.add('speaking-anim'); };
+        utter.onend = () => { 
             orb.classList.remove('speaking-anim');
-            orb.innerText = "HEROVEE";
-            setTimeout(() => mainUI.classList.remove('voice-active'), 1500);
+            // Restore Orb Text
+            orb.innerHTML = `<span class="orb-text orb-t1">The</span><span class="orb-text orb-t2">Poor Squad</span>`;
+            setTimeout(() => mainUI.classList.remove('voice-active'), 2000); 
         };
         synth.speak(utter);
     }
 
-    // ভয়েস মোড অন করা
+    // Voice Mode
     window.startVoiceMode = () => {
-        const recognition = new (window.webkitSpeechRecognition || window.SpeechRecognition)();
-        recognition.lang = 'bn-BD';
-        
-        recognition.onstart = () => {
-            mainUI.classList.add('voice-active');
-            orb.innerText = "LISTENING";
-            orb.classList.add('speaking-anim');
+        const rec = new (window.webkitSpeechRecognition || window.SpeechRecognition)();
+        rec.lang = 'bn-BD';
+        rec.onstart = () => { 
+            mainUI.classList.add('voice-active'); 
+            orb.innerText = "LISTENING"; 
+            orb.classList.add('speaking-anim'); 
         };
-
-        recognition.onresult = async (event) => {
-            const transcript = event.results[0][0].transcript;
-            orb.classList.remove('speaking-anim');
+        rec.onresult = async (e) => {
+            const transcript = e.results[0][0].transcript;
             orb.innerText = "THINKING";
+            orb.classList.remove('speaking-anim');
             await processAI(transcript);
         };
-
-        recognition.onerror = () => {
+        rec.onerror = () => { 
             mainUI.classList.remove('voice-active');
             orb.classList.remove('speaking-anim');
         };
-
-        recognition.start();
+        rec.start();
     };
 
-    // টেক্সট এবং ভয়েস দুইটার জন্যই মেইন ফাংশন
+    // Text & Voice Process
     window.askAI = async () => {
         const input = document.getElementById('userInput');
         const val = input.value.trim();
         if(!val) return;
         
-        chatDisplay.innerHTML += `<div style="color:var(--neon); margin-bottom:10px;">[BOSS]: ${val}</div>`;
+        chatDisplay.innerHTML += `<div style="color:var(--neon); margin-bottom:12px;"><b>[SIYAM]:</b> ${val}</div>`;
         input.value = "";
         chatDisplay.scrollTop = chatDisplay.scrollHeight;
         
@@ -171,21 +159,17 @@
             const data = await res.json();
             const reply = data.choices[0].message.content;
             
-            chatDisplay.innerHTML += `<div style="color:var(--gold); margin-bottom:10px;">[HEROVEE]: ${reply}</div>`;
+            chatDisplay.innerHTML += `<div style="color:var(--gold); margin-bottom:12px;"><b>[HEROVEE]:</b> ${reply}</div>`;
             chatDisplay.scrollTop = chatDisplay.scrollHeight;
             
-            // যদি ভয়েস মোড অন থাকে তবেই কথা বলবে
-            if(mainUI.classList.contains('voice-active')) {
-                speak(reply);
-            } else {
-                orb.innerText = "HEROVEE";
+            if(mainUI.classList.contains('voice-active')) { speak(reply); } else { 
+                orb.innerHTML = `<span class="orb-text orb-t1">The</span><span class="orb-text orb-t2">Poor Squad</span>`;
             }
         } catch (e) {
             orb.innerText = "ERROR";
-            setTimeout(() => orb.innerText = "HEROVEE", 2000);
+            setTimeout(() => orb.innerHTML = `<span class="orb-text orb-t1">The</span><span class="orb-text orb-t2">Poor Squad</span>`, 2000);
         }
     }
 </script>
-
 </body>
 </html>
