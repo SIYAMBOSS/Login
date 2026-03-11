@@ -3,119 +3,146 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>HEROVEE - Live Voice</title>
+    <title>HEROVEE AI - BOSS MODE</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
-        body, html { margin: 0; padding: 0; height: 100%; width: 100%; background: #000; font-family: 'Segoe UI', sans-serif; overflow: hidden; color: white; }
-
-        /* স্ক্রিনশটের মতো ব্লু গ্রেডিয়েন্ট ব্যাকগ্রাউন্ড এনিমেশন */
-        .bg-gradient {
-            position: absolute;
-            bottom: -100px;
-            left: 0;
-            width: 100%;
-            height: 400px;
-            background: radial-gradient(circle at bottom, #2563eb 0%, transparent 70%);
-            filter: blur(80px);
-            animation: wave 4s ease-in-out infinite alternate;
-            z-index: 1;
-        }
-
-        @keyframes wave {
-            from { transform: translateY(0) scale(1); }
-            to { transform: translateY(30px) scale(1.1); }
-        }
-
-        /* উপরের Live লেখা */
-        .header { position: absolute; top: 40px; width: 100%; text-align: center; z-index: 10; font-size: 18px; letter-spacing: 1px; display: flex; justify-content: center; align-items: center; gap: 8px; }
-        .live-dot { height: 8px; width: 8px; background: #fff; border-radius: 50%; box-shadow: 0 0 10px #fff; }
-
-        /* মাঝখানের স্ট্যাটাস */
-        .main-status { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); text-align: center; z-index: 10; width: 80%; }
-        #statusTxt { font-size: 20px; font-weight: 300; opacity: 0.8; }
-
-        /* নিচের কন্ট্রোল বাটনগুলো */
-        .footer-controls { position: absolute; bottom: 40px; width: 100%; display: flex; justify-content: center; gap: 20px; z-index: 10; align-items: center; }
-        .btn { background: #1e1e1e; border: none; border-radius: 50%; width: 55px; height: 55px; color: white; font-size: 20px; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: 0.3s; }
-        .btn-end { background: #ef4444; width: 65px; height: 65px; font-size: 24px; }
-        .btn:active { transform: scale(0.9); }
-        .listening-active { background: #2563eb; box-shadow: 0 0 20px #2563eb; }
+        * { box-sizing: border-box; }
+        body { background: #000; color: #fff; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; overflow: hidden; }
+        .ai-container { width: 95%; max-width: 450px; background: #0d0d0d; padding: 25px; border-radius: 30px; border: 1px solid #45f3ff44; box-shadow: 0 0 30px #45f3ff15; text-align: center; }
+        .status { font-size: 11px; color: #45f3ff; margin-bottom: 15px; text-transform: uppercase; letter-spacing: 2px; font-weight: bold; }
+        #aiChatBox { height: 350px; overflow-y: auto; background: #050505; border-radius: 20px; padding: 20px; margin-bottom: 20px; text-align: left; font-size: 15px; border: 1px solid #222; scroll-behavior: smooth; }
+        .user-msg { color: #fff; margin-bottom: 12px; background: #1a1a1a; padding: 10px 15px; border-radius: 15px 15px 0 15px; align-self: flex-end; border-right: 3px solid #45f3ff; }
+        .ai-msg { color: #ffee00; margin-bottom: 12px; background: #1a1a1a; padding: 10px 15px; border-radius: 15px 15px 15px 0; border-left: 3px solid #ffee00; }
+        .input-area { display: flex; gap: 12px; align-items: center; }
+        input { flex: 1; background: #1a1a1a; border: 1px solid #333; color: #fff; padding: 14px 20px; border-radius: 50px; outline: none; font-size: 14px; }
+        input:focus { border-color: #45f3ff; }
+        button { background: #45f3ff; border: none; width: 50px; height: 50px; border-radius: 50%; cursor: pointer; color: #000; transition: 0.3s; display: flex; justify-content: center; align-items: center; font-size: 18px; }
+        button:hover { transform: scale(1.1); box-shadow: 0 0 15px #45f3ff; }
+        .mic-btn { background: #ffee00; }
+        .mic-btn.listening { background: #ff3c7b; animation: pulse 1s infinite; }
+        @keyframes pulse { 0% { box-shadow: 0 0 0 0 rgba(255, 60, 123, 0.7); } 70% { box-shadow: 0 0 0 15px rgba(255, 60, 123, 0); } 100% { box-shadow: 0 0 0 0 rgba(255, 60, 123, 0); } }
     </style>
 </head>
 <body>
 
-<div class="header">
-    <div class="live-dot"></div>
-    <span>Live</span>
-</div>
-
-<div class="main-status">
-    <div id="statusTxt">HEROVEE কানেক্ট হচ্ছে...</div>
-</div>
-
-<div class="bg-gradient"></div>
-
-<div class="footer-controls">
-    <button class="btn">📷</button>
-    <button class="btn">📤</button>
-    <button id="micBtn" class="btn" onclick="startCall()">🎤</button>
-    <button class="btn btn-end" onclick="location.reload()">✕</button>
+<div class="ai-container">
+    <div class="status">HEROVEE AI • ONLINE • BOSS: SIYAM</div>
+    <div id="aiChatBox">
+        <div class="ai-msg">হ্যালো সিয়াম বস্! আমি HEROVEE। আমি আপনার কথা শুনতে এবং বলতে পারি।</div>
+    </div>
+    
+    <div class="input-area">
+        <button id="micBtn" class="mic-btn" onclick="startListening()"><i class="fas fa-microphone"></i></button>
+        <input type="text" id="aiInput" placeholder="Type or Speak to HEROVEE..." onkeypress="if(event.key === 'Enter') askAI()">
+        <button onclick="askAI()"><i class="fas fa-paper-plane"></i></button>
+    </div>
 </div>
 
 <script>
-    const API_KEY = "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";
-    const statusTxt = document.getElementById('statusTxt');
-    const micBtn = document.getElementById('micBtn');
+// আপনার Groq API Key
+const GROQ_API_KEY = "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";
 
-    // Speech Recognition
-    const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
-    const recognition = new SpeechRecognition();
-    recognition.lang = 'bn-BD';
+// ১. সুন্দরী ফিমেইল ভয়েস আউটপুট
+function speak(text) {
+    const synth = window.speechSynthesis;
+    const utterance = new SpeechSynthesisUtterance(text);
+    const voices = synth.getVoices();
+    
+    // বাংলা টেক্সট কি না চেক করা
+    const isBengali = /[\u0980-\u09FF]/.test(text);
+    
+    if (isBengali) {
+        const bnVoice = voices.find(v => v.lang.includes('bn') || v.name.includes('Bangladesh') || v.name.includes('India'));
+        if (bnVoice) utterance.voice = bnVoice;
+        utterance.lang = 'bn-BD';
+    } else {
+        const enVoice = voices.find(v => v.name.includes('Female') || v.name.includes('Google UK English Female') || v.name.includes('Zira'));
+        if (enVoice) utterance.voice = enVoice;
+        utterance.lang = 'en-US';
+    }
+    
+    utterance.pitch = 1.3;
+    utterance.rate = 1.0;
+    synth.speak(utterance);
+}
+
+// ২. Groq AI লজিক
+async function askAI() {
+    const inputField = document.getElementById('aiInput');
+    const userInput = inputField.value.trim();
+    if (!userInput) return;
+
+    const chatBox = document.getElementById('aiChatBox');
+    chatBox.innerHTML += `<div class="user-msg"><b>Boss:</b> ${userInput}</div>`;
+    inputField.value = "";
+    chatBox.scrollTop = chatBox.scrollHeight;
+
+    try {
+        const response = await fetch("https://api.groq.com/openai/v1/chat/completions", {
+            method: "POST",
+            headers: {
+                "Authorization": `Bearer ${GROQ_API_KEY}`,
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                model: "llama3-8b-8192",
+                messages: [
+                    { 
+                        role: "system", 
+                        content: "You are HEROVEE, a beautiful, sweet, and loyal female AI assistant for your boss Siyam. You speak both Bengali and English perfectly. If Siyam speaks in Bengali, reply in Bengali. Keep answers short and charming." 
+                    },
+                    { role: "user", content: userInput }
+                ]
+            })
+        });
+
+        const data = await response.json();
+        const aiMsg = data.choices[0].message.content;
+        
+        chatBox.innerHTML += `<div class="ai-msg"><b>HEROVEE:</b> ${aiMsg}</div>`;
+        chatBox.scrollTop = chatBox.scrollHeight;
+        
+        speak(aiMsg);
+
+    } catch (error) {
+        chatBox.innerHTML += `<div style="color: #ff3c7b;">Error: API কানেকশন হচ্ছে না বস্!</div>`;
+    }
+}
+
+// ৩. ভয়েস রিকগনিশন (Mic)
+function startListening() {
+    const recognition = new (window.SpeechRecognition || window.webkitSpeechRecognition)();
+    const micBtn = document.getElementById('micBtn');
+    
+    // অটো ডিটেকশনের জন্য বা বসের সুবিধার জন্য ডিফল্ট বাংলা রাখা হয়েছে
+    recognition.lang = 'bn-BD'; 
 
     recognition.onstart = () => {
-        micBtn.classList.add('listening-active');
-        statusTxt.innerText = "আমি শুনছি... কথা বলুন";
+        micBtn.classList.add('listening');
+        document.getElementById('aiInput').placeholder = "শুনছি বস্...";
     };
 
     recognition.onresult = (event) => {
-        const text = event.results[0][0].transcript;
-        statusTxt.innerText = "আপনি বললেন: " + text;
-        sendToAI(text);
+        const transcript = event.results[0][0].transcript;
+        document.getElementById('aiInput').value = transcript;
+        micBtn.classList.remove('listening');
+        askAI();
     };
 
-    function startCall() {
-        recognition.start();
-    }
+    recognition.onerror = () => {
+        micBtn.classList.remove('listening');
+        document.getElementById('aiInput').placeholder = "আবার চেষ্টা করুন...";
+    };
 
-    async function sendToAI(text) {
-        statusTxt.innerText = "HEROVEE চিন্তা করছে...";
-        try {
-            const response = await fetch('https://api.groq.com/openai/v1/chat/completions', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${API_KEY}` },
-                body: JSON.stringify({ model: "llama-3.3-70b-versatile", messages: [{ role: "user", content: text }] })
-            });
-            const data = await response.json();
-            const aiMsg = data.choices[0].message.content;
-            speak(aiMsg);
-        } catch (e) {
-            statusTxt.innerText = "কানেকশন এরর!";
-        }
-    }
+    recognition.onend = () => {
+        micBtn.classList.remove('listening');
+    };
+    
+    recognition.start();
+}
 
-    function speak(text) {
-        const utterance = new SpeechSynthesisUtterance(text);
-        const voices = window.speechSynthesis.getVoices();
-        const femaleVoice = voices.find(v => v.lang.includes('bn') && (v.name.includes('Female') || v.name.includes('Google')));
-        
-        if (femaleVoice) utterance.voice = femaleVoice;
-        utterance.lang = 'bn-BD';
-        utterance.pitch = 1.2;
-        
-        utterance.onstart = () => { statusTxt.innerText = "HEROVEE কথা বলছে..."; };
-        utterance.onend = () => { statusTxt.innerText = "আবার কথা বলতে মাইক চাপুন"; micBtn.classList.remove('listening-active'); };
-        
-        window.speechSynthesis.speak(utterance);
-    }
+// ভয়েস লোড হওয়ার হ্যাক
+window.speechSynthesis.onvoiceschanged = () => { window.speechSynthesis.getVoices(); };
 </script>
 
 </body>
