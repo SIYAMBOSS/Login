@@ -22,7 +22,7 @@ body {
     overflow: hidden;
 }
 
-/* বর্ডারের অ্যানিমেটেড গ্লো ইফেক্ট */
+/* ঘূর্ণায়মান বর্ডার ইফেক্ট */
 .box::before {
     content: '';
     position: absolute;
@@ -47,7 +47,7 @@ body {
     z-index: 1;
     transform-origin: bottom right;
     animation: animate 6s linear infinite;
-    animation-delay: -3s; /* দ্বিতীয় রঙটি দেরিতে শুরু হবে */
+    animation-delay: -3s;
 }
 
 @keyframes animate {
@@ -55,9 +55,10 @@ body {
     100% { transform: rotate(360deg); }
 }
 
-.form {
+/* ফর্মের ভেতরের অংশ */
+form {
     position: absolute;
-    inset: 4px; /* বর্ডারের পুরুত্ব ঠিক করে */
+    inset: 4px;
     background: #222;
     padding: 50px 40px;
     border-radius: 8px;
@@ -73,28 +74,27 @@ h2 {
     letter-spacing: 0.1em;
 }
 
-.inputBx {
+.inputBox {
     position: relative;
     width: 100%;
     margin-top: 35px;
 }
 
-.inputBx input {
+.inputBox input {
     position: relative;
     width: 100%;
     padding: 20px 10px 10px;
     background: transparent;
-    outline: none;
     border: none;
-    box-shadow: none;
-    color: #23242a;
+    outline: none;
+    color: #fff;
     font-size: 1em;
     letter-spacing: 0.05em;
     transition: 0.5s;
     z-index: 10;
 }
 
-.inputBx span {
+.inputBox span {
     position: absolute;
     left: 0;
     padding: 20px 0px 10px;
@@ -105,14 +105,14 @@ h2 {
     transition: 0.5s;
 }
 
-.inputBx input:valid ~ span,
-.inputBx input:focus ~ span {
+.inputBox input:valid ~ span,
+.inputBox input:focus ~ span {
     color: #fff;
     font-size: 0.75em;
     transform: translateY(-34px);
 }
 
-.inputBx i {
+.inputBox i {
     position: absolute;
     left: 0;
     bottom: 0;
@@ -125,8 +125,8 @@ h2 {
     pointer-events: none;
 }
 
-.inputBx input:valid ~ i,
-.inputBx input:focus ~ i {
+.inputBox input:valid ~ i,
+.inputBox input:focus ~ i {
     height: 44px;
 }
 
@@ -153,4 +153,9 @@ input[type="submit"] {
     font-size: 0.75em;
     color: #8f8f8f;
     text-decoration: none;
+}
+
+.links a:hover, 
+.links a:nth-child(2) {
+    color: #fff;
 }
