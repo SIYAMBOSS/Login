@@ -3,30 +3,29 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>HEROVEE - VOICE CORE</title>
+    <title>HEROVEE - ULTIMATE CORE 2026</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <style>
         :root { --neon: #45f3ff; --gold: #ffee00; --bg: #000; }
         body, html { margin: 0; padding: 0; width: 100%; height: 100%; background: var(--bg); color: var(--neon); font-family: 'Orbitron', sans-serif; overflow: hidden; }
         
-        .main-ui { display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100vh; transition: 0.5s; }
+        /* UI Layout */
+        .main-ui { display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100vh; transition: 0.8s; }
         
-        /* Full Screen Voice Mode Logic */
-        .voice-mode-active .top-nav, 
-        .voice-mode-active #chatDisplay, 
-        .voice-mode-active .controls { 
-            opacity: 0; pointer-events: none; transform: translateY(20px); 
+        /* Full Screen Voice Isolation */
+        .voice-active .top-nav, .voice-active #chatDisplay, .voice-active .controls { 
+            opacity: 0; pointer-events: none; transform: scale(0.9);
         }
 
+        /* The Orb Container */
         .core-box { 
             position: relative; width: 220px; height: 220px; 
             display: flex; justify-content: center; align-items: center; 
-            transition: all 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            transition: 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
             z-index: 1000;
         }
 
-        /* অর্ব বড় করার লজিক */
-        .voice-mode-active .core-box { transform: scale(1.8); }
+        .voice-active .core-box { transform: scale(1.6); }
 
         .ring { position: absolute; border-radius: 50%; border: 2px solid transparent; }
         .r1 { width: 100%; height: 100%; border-top: 3px solid var(--neon); animation: spin 3s linear infinite; }
@@ -37,27 +36,30 @@
             background: radial-gradient(circle, #004444, #000); 
             border-radius: 50%; border: 1px solid var(--neon); 
             display: flex; justify-content: center; align-items: center; 
-            box-shadow: 0 0 20px rgba(69, 243, 255, 0.3);
-            font-size: 10px; cursor: pointer; transition: 0.5s;
+            box-shadow: 0 0 20px rgba(69, 243, 255, 0.4);
+            font-size: 10px; cursor: pointer; transition: 0.5s; text-align: center; padding: 5px;
         }
 
-        /* কথা বলার সময় লাইভ এনিমেশন */
+        /* Speaking Animation (Wave effect) */
         .speaking-anim { 
-            animation: liveVoice 0.4s infinite alternate !important; 
-            box-shadow: 0 0 50px var(--neon), inset 0 0 20px var(--neon) !important;
-            background: radial-gradient(circle, var(--neon), #000) !important;
+            animation: livePulse 0.5s infinite alternate !important; 
+            box-shadow: 0 0 60px var(--neon), inset 0 0 30px var(--neon) !important;
         }
 
-        @keyframes liveVoice {
-            from { transform: scale(1); opacity: 0.8; }
-            to { transform: scale(1.15); opacity: 1; }
+        @keyframes livePulse {
+            from { transform: scale(1); filter: brightness(1); }
+            to { transform: scale(1.1); filter: brightness(1.5); }
         }
 
-        /* UI Elements Styling */
-        #chatDisplay { width: 90%; max-width: 480px; height: 180px; margin-top: 30px; background: rgba(0,10,10,0.8); border: 1px solid rgba(69,243,255,0.1); border-radius: 20px; padding: 15px; font-size: 12px; overflow-y: auto; scrollbar-width: none; transition: 0.5s; }
-        .controls { margin-top: 20px; display: flex; gap: 10px; width: 90%; max-width: 480px; transition: 0.5s; }
-        input { flex: 1; background: #080808; border: 1px solid #222; color: #fff; padding: 15px; border-radius: 12px; outline: none; }
-        .mic-btn { background: none; border: 1px solid var(--neon); color: var(--neon); padding: 15px; border-radius: 12px; cursor: pointer; }
+        /* Interface Elements */
+        #chatDisplay { width: 90%; max-width: 480px; height: 180px; margin-top: 30px; background: rgba(0,10,10,0.8); border: 1px solid rgba(69,243,255,0.1); border-radius: 20px; padding: 15px; font-size: 12px; overflow-y: auto; color: #fff; transition: 0.5s; font-family: 'Inter'; }
+
+        .controls { margin-top: 20px; display: flex; gap: 8px; width: 92%; max-width: 480px; transition: 0.5s; }
+        input { flex: 1; background: #0a0a0a; border: 1px solid #333; color: #fff; padding: 14px; border-radius: 12px; outline: none; }
+        .action-btn { background: none; border: 1px solid var(--neon); color: var(--neon); width: 50px; border-radius: 12px; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: 0.3s; }
+        .action-btn:hover { background: var(--neon); color: #000; }
+        .send-btn { border-color: var(--gold); color: var(--gold); }
+        .send-btn:hover { background: var(--gold); color: #000; }
 
         @keyframes spin { 100% { transform: rotate(360deg); } }
         @keyframes spinRev { 100% { transform: rotate(-360deg); } }
@@ -67,78 +69,121 @@
 
 <div class="main-ui" id="mainUI">
     <div class="top-nav" style="position:absolute; top:5%;">
-        <button onclick="location.href='index.html'" style="background:none; border:1px solid red; color:red; padding:5px 15px; border-radius:20px; font-size:10px; cursor:pointer;">LOGOUT</button>
+        <button onclick="logout()" style="background:none; border:1px solid red; color:red; padding:6px 20px; border-radius:50px; font-size:10px; cursor:pointer; font-weight: bold;">TERMINATE SESSION</button>
     </div>
 
     <div class="core-box" id="coreContainer">
         <div class="ring r1"></div><div class="ring r2"></div>
-        <div class="center-orb" id="orb" onclick="toggleVoiceMode()">HEROVEE</div>
+        <div class="center-orb" id="orb">HEROVEE</div>
     </div>
 
     <div id="chatDisplay"></div>
 
     <div class="controls">
-        <input type="text" id="userInput" placeholder="Type command...">
-        <button class="mic-btn" onclick="toggleVoiceMode()"><i class="fas fa-microphone"></i></button>
+        <button class="action-btn" onclick="startVoiceMode()"><i class="fas fa-microphone"></i></button>
+        <input type="text" id="userInput" placeholder="Boss, command me..." onkeypress="if(event.key === 'Enter') askAI()">
+        <button class="action-btn send-btn" onclick="askAI()"><i class="fas fa-paper-plane"></i></button>
     </div>
 </div>
 
-<script>
+<script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+    import { getAuth, signOut } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
+
+    const firebaseConfig = { apiKey: "AIzaSyAEl8t2m_HZ1oNOC49lmpiiM4-XhGzWRfE", authDomain: "herovee.firebaseapp.com", projectId: "herovee", storageBucket: "herovee.firebasestorage.app", messagingSenderId: "700112828047", appId: "1:700112828047:web:988f0598b5341a29bba2fa" };
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+
     const orb = document.getElementById('orb');
     const mainUI = document.getElementById('mainUI');
     const chatDisplay = document.getElementById('chatDisplay');
+    const API_KEYS = ["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", "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"];
 
-    function toggleVoiceMode() {
-        // Voice Mode Active
-        mainUI.classList.add('voice-mode-active');
-        orb.innerText = "LISTENING";
-        
-        const recognition = new (window.webkitSpeechRecognition || window.SpeechRecognition)();
-        recognition.lang = 'bn-BD';
+    window.logout = () => signOut(auth).then(() => window.location.href = "index.html");
 
-        recognition.onstart = () => {
-            orb.classList.add('speaking-anim'); // এনিমেশন শুরু
-        };
-
-        recognition.onresult = async (event) => {
-            const command = event.results[0][0].transcript;
-            orb.innerText = "THINKING";
-            
-            // এখানে আপনার Groq API কল হবে (আগের কোডের মতো)
-            // উদাহরণের জন্য ১ সেকেন্ড ওয়েট করছি
-            setTimeout(() => {
-                const reply = "Bosh, ami apnar kotha shunte peyechi. Apni bollen: " + command;
-                speak(reply);
-            }, 1000);
-        };
-
-        recognition.onend = () => {
-            // কথা বলা শেষ হলে আবার নরমাল মোডে ফিরবে (কিছুক্ষণ পর)
-        };
-
-        recognition.start();
-    }
-
+    // এআই-এর কথা বলা (Text to Speech)
     function speak(text) {
         const synth = window.speechSynthesis;
         const utter = new SpeechSynthesisUtterance(text);
         utter.lang = 'bn-BD';
-
         utter.onstart = () => {
             orb.innerText = "SPEAKING";
             orb.classList.add('speaking-anim');
         };
-
         utter.onend = () => {
             orb.classList.remove('speaking-anim');
             orb.innerText = "HEROVEE";
-            // ৩ সেকেন্ড পর আবার সব লেখা ফিরিয়ে আনা
-            setTimeout(() => {
-                mainUI.classList.remove('voice-mode-active');
-            }, 2000);
+            setTimeout(() => mainUI.classList.remove('voice-active'), 1500);
+        };
+        synth.speak(utter);
+    }
+
+    // ভয়েস মোড অন করা
+    window.startVoiceMode = () => {
+        const recognition = new (window.webkitSpeechRecognition || window.SpeechRecognition)();
+        recognition.lang = 'bn-BD';
+        
+        recognition.onstart = () => {
+            mainUI.classList.add('voice-active');
+            orb.innerText = "LISTENING";
+            orb.classList.add('speaking-anim');
         };
 
-        synth.speak(utter);
+        recognition.onresult = async (event) => {
+            const transcript = event.results[0][0].transcript;
+            orb.classList.remove('speaking-anim');
+            orb.innerText = "THINKING";
+            await processAI(transcript);
+        };
+
+        recognition.onerror = () => {
+            mainUI.classList.remove('voice-active');
+            orb.classList.remove('speaking-anim');
+        };
+
+        recognition.start();
+    };
+
+    // টেক্সট এবং ভয়েস দুইটার জন্যই মেইন ফাংশন
+    window.askAI = async () => {
+        const input = document.getElementById('userInput');
+        const val = input.value.trim();
+        if(!val) return;
+        
+        chatDisplay.innerHTML += `<div style="color:var(--neon); margin-bottom:10px;">[BOSS]: ${val}</div>`;
+        input.value = "";
+        chatDisplay.scrollTop = chatDisplay.scrollHeight;
+        
+        orb.innerText = "THINKING";
+        await processAI(val);
+    };
+
+    async function processAI(text) {
+        try {
+            const res = await fetch("https://api.groq.com/openai/v1/chat/completions", {
+                method: "POST",
+                headers: { "Authorization": `Bearer ${API_KEYS[0]}`, "Content-Type": "application/json" },
+                body: JSON.stringify({
+                    model: "llama-3.3-70b-versatile",
+                    messages: [{ role: "system", content: "You are HEROVEE, built by Siyam. Today is March 11, 2026. Give brief answers." }, { role: "user", content: text }]
+                })
+            });
+            const data = await res.json();
+            const reply = data.choices[0].message.content;
+            
+            chatDisplay.innerHTML += `<div style="color:var(--gold); margin-bottom:10px;">[HEROVEE]: ${reply}</div>`;
+            chatDisplay.scrollTop = chatDisplay.scrollHeight;
+            
+            // যদি ভয়েস মোড অন থাকে তবেই কথা বলবে
+            if(mainUI.classList.contains('voice-active')) {
+                speak(reply);
+            } else {
+                orb.innerText = "HEROVEE";
+            }
+        } catch (e) {
+            orb.innerText = "ERROR";
+            setTimeout(() => orb.innerText = "HEROVEE", 2000);
+        }
     }
 </script>
 
