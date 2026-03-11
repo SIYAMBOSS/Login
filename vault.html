@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>HEROVEE - MAIN VAULT</title>
+    <title>HEROVEE - MAIN INTERFACE</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
         :root { --neon: #45f3ff; --gold: #ffee00; --pink: #ff00ea; }
@@ -11,24 +11,34 @@
         .bg-container { position: fixed; width: 100%; height: 100%; perspective: 1000px; z-index: -1; }
         .grid { position: absolute; width: 200%; height: 200%; top: -50%; left: -50%; background-image: linear-gradient(var(--neon) 1px, transparent 1px), linear-gradient(90deg, var(--neon) 1px, transparent 1px); background-size: 50px 50px; transform: rotateX(60deg); opacity: 0.1; animation: moveGrid 15s linear infinite; }
         @keyframes moveGrid { 0% { transform: rotateX(60deg) translateY(0); } 100% { transform: rotateX(60deg) translateY(50px); } }
+        
         .main-ui { display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100vh; position: relative; }
-        .core-box { position: relative; width: 280px; height: 280px; display: flex; justify-content: center; align-items: center; }
+
+        /* Logout Button - Orbit-এর উপরে */
+        .top-nav { position: absolute; top: 12%; z-index: 100; }
+        .logout-mini { background: rgba(255, 0, 0, 0.15); border: 1px solid #ff3c7b; color: #ff3c7b; padding: 6px 18px; border-radius: 50px; cursor: pointer; font-size: 11px; font-weight: bold; letter-spacing: 1px; transition: 0.3s; }
+        .logout-mini:hover { background: #ff3c7b; color: #000; box-shadow: 0 0 15px #ff3c7b; }
+
+        .core-box { position: relative; width: 280px; height: 280px; display: flex; justify-content: center; align-items: center; margin-top: 20px; }
         .ring { position: absolute; border-radius: 50%; border: 2px solid transparent; }
         .r1 { width: 100%; height: 100%; border-top: 3px solid var(--neon); animation: spin 4s linear infinite; }
         .r2 { width: 85%; height: 85%; border-bottom: 2px solid var(--gold); animation: spinRev 6s linear infinite; }
+        
         .center-orb { width: 110px; height: 110px; background: radial-gradient(circle, #002222, #000); border-radius: 50%; border: 1px solid var(--neon); display: flex; justify-content: center; align-items: center; z-index: 10; transition: 0.3s; }
         .center-orb.active { animation: pulseCore 0.6s infinite alternate; border-color: var(--gold); box-shadow: 0 0 30px var(--gold); }
         @keyframes pulseCore { from { transform: scale(1); } to { transform: scale(1.1); } }
+
         .hud { position: absolute; padding: 10px; background: rgba(0, 20, 20, 0.4); border: 1px solid rgba(69, 243, 255, 0.1); font-size: 11px; width: 110px; backdrop-filter: blur(5px); }
         .hud-l { top: 20px; left: 20px; border-left: 3px solid var(--neon); }
         .hud-r { top: 20px; right: 20px; border-right: 3px solid var(--gold); text-align: right; }
+
         #chatDisplay { width: 90%; max-width: 450px; height: 180px; margin-top: 25px; overflow-y: auto; background: rgba(0,0,0,0.85); border: 1px solid rgba(69, 243, 255, 0.15); padding: 15px; font-size: 13px; border-radius: 10px; scrollbar-width: none; }
         .controls { margin-top: 15px; display: flex; gap: 10px; width: 90%; max-width: 450px; }
         input { flex: 1; background: #000; border: 1px solid rgba(69, 243, 255, 0.3); color: #fff; padding: 12px; outline: none; border-radius: 5px; }
         .btn { border: none; padding: 10px 15px; font-weight: bold; cursor: pointer; border-radius: 5px; }
         .btn-exe { background: var(--neon); color: #000; }
         .btn-mic { background: var(--gold); color: #000; }
-        .logout-btn { position: absolute; bottom: 20px; right: 20px; background: rgba(255,0,0,0.1); border: 1px solid #ff3c7b; color: #ff3c7b; padding: 10px 20px; border-radius: 50px; cursor: pointer; font-size: 12px; font-weight: bold; transition: 0.3s; }
+
         @keyframes spin { 100% { transform: rotate(360deg); } }
         @keyframes spinRev { 100% { transform: rotate(-360deg); } }
     </style>
@@ -36,19 +46,25 @@
 <body>
 <div class="bg-container"><div class="grid"></div></div>
 <div class="main-ui">
-    <div class="hud hud-l">> BOSS: SIYAM<br>> AUTH: SECURE<br>> DATA: ON</div>
-    <div class="hud hud-r">> VISION: 9.5<br>> STATUS: ONLINE<br>> LINK: OK</div>
+    <div class="hud hud-l">> BOSS: SIYAM<br>> AUTH: SECURE</div>
+    <div class="hud hud-r">> VISION: 9.5<br>> STATUS: ONLINE</div>
+
+    <div class="top-nav">
+        <button class="logout-mini" id="logoutBtn">TERMINATE SESSION</button>
+    </div>
+
     <div class="core-box">
         <div class="ring r1"></div><div class="ring r2"></div>
         <div class="center-orb" id="orb"><span id="status" style="font-weight:bold; letter-spacing:1px;">HEROVEE</span></div>
     </div>
+
     <div id="chatDisplay"></div>
+
     <div class="controls">
         <button class="btn btn-mic" onclick="startMic()"><i class="fas fa-microphone"></i></button>
-        <input type="text" id="userInput" placeholder="Ask HEROVEE..." onkeypress="if(event.key === 'Enter') askAI()">
+        <input type="text" id="userInput" placeholder="Command HEROVEE..." onkeypress="if(event.key === 'Enter') askAI()">
         <button class="btn btn-exe" onclick="askAI()">EXECUTE</button>
     </div>
-    <button class="logout-btn" id="logoutBtn">LOGOUT</button>
 </div>
 
 <script type="module">
@@ -66,8 +82,19 @@
     const app = initializeApp(firebaseConfig);
     const auth = getAuth(app);
 
-    onAuthStateChanged(auth, (u) => { if (!u) window.location.href = "index.html"; });
-    document.getElementById('logoutBtn').onclick = () => { signOut(auth).then(() => { localStorage.removeItem('herovee_chat'); window.location.href = "index.html"; }); };
+    // Strict Auth Check
+    onAuthStateChanged(auth, (u) => { 
+        if (!u) {
+            window.location.href = "index.html"; 
+        }
+    });
+
+    document.getElementById('logoutBtn').onclick = () => {
+        signOut(auth).then(() => {
+            localStorage.removeItem('herovee_chat');
+            window.location.href = "index.html";
+        });
+    };
 
     const API_KEYS = [
         "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", "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",
@@ -96,11 +123,14 @@
         chatDisplay.scrollTop = chatDisplay.scrollHeight;
 
         async function tryRequest(idx) {
-            if(idx >= API_KEYS.length) return "Limit Over.";
+            if(idx >= API_KEYS.length) return "Limit Over, Boss.";
             try {
                 const res = await fetch("https://api.groq.com/openai/v1/chat/completions", {
                     method: "POST", headers: { "Authorization": `Bearer ${API_KEYS[idx]}`, "Content-Type": "application/json" },
-                    body: JSON.stringify({ model: "llama-3.3-70b-versatile", messages: [{ role: "system", content: "You are HEROVEE. Siyam's AI." }, { role: "user", content: val }] })
+                    body: JSON.stringify({ 
+                        model: "llama-3.3-70b-versatile", 
+                        messages: [{ role: "system", content: "You are HEROVEE. Siyam's personal AI. Point-to-point answer only." }, { role: "user", content: val }] 
+                    })
                 });
                 const data = await res.json();
                 if (res.status === 429) return await tryRequest(idx + 1);
