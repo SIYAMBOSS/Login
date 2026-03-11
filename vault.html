@@ -3,133 +3,144 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>HEROVEE - LIVE ACCESS 2026</title>
+    <title>HEROVEE - VOICE CORE</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <style>
-        :root { --neon: #45f3ff; --gold: #ffee00; --pink: #ff00ea; --bg: #000; }
+        :root { --neon: #45f3ff; --gold: #ffee00; --bg: #000; }
         body, html { margin: 0; padding: 0; width: 100%; height: 100%; background: var(--bg); color: var(--neon); font-family: 'Orbitron', sans-serif; overflow: hidden; }
         
-        /* Cyberpunk Background */
-        .bg-container { position: fixed; width: 100%; height: 100%; perspective: 1000px; z-index: -1; }
-        .grid { position: absolute; width: 200%; height: 200%; top: -50%; left: -50%; background-image: linear-gradient(var(--neon) 1px, transparent 1px), linear-gradient(90deg, var(--neon) 1px, transparent 1px); background-size: 60px 60px; transform: rotateX(60deg); opacity: 0.1; animation: moveGrid 10s linear infinite; }
-        @keyframes moveGrid { 0% { transform: rotateX(60deg) translateY(0); } 100% { transform: rotateX(60deg) translateY(60px); } }
+        .main-ui { display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100vh; transition: 0.5s; }
+        
+        /* Full Screen Voice Mode Logic */
+        .voice-mode-active .top-nav, 
+        .voice-mode-active #chatDisplay, 
+        .voice-mode-active .controls { 
+            opacity: 0; pointer-events: none; transform: translateY(20px); 
+        }
 
-        .main-ui { display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100vh; position: relative; }
+        .core-box { 
+            position: relative; width: 220px; height: 220px; 
+            display: flex; justify-content: center; align-items: center; 
+            transition: all 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            z-index: 1000;
+        }
 
-        /* Logout Top Center */
-        .top-nav { position: absolute; top: 8%; z-index: 100; text-align: center; }
-        .logout-btn { background: rgba(255, 0, 0, 0.1); border: 1px solid #ff3c7b; color: #ff3c7b; padding: 8px 25px; border-radius: 50px; cursor: pointer; font-size: 10px; font-weight: bold; transition: 0.3s; text-transform: uppercase; letter-spacing: 2px; }
-        .logout-btn:hover { background: #ff3c7b; color: #000; box-shadow: 0 0 20px #ff3c7b; }
-        .live-tag { font-size: 9px; color: var(--gold); margin-top: 8px; letter-spacing: 1px; animation: blink 1.5s infinite; }
-        @keyframes blink { 50% { opacity: 0.3; } }
+        /* অর্ব বড় করার লজিক */
+        .voice-mode-active .core-box { transform: scale(1.8); }
 
-        /* AI Core Orbit */
-        .core-box { position: relative; width: 240px; height: 240px; display: flex; justify-content: center; align-items: center; margin-top: 15px; }
         .ring { position: absolute; border-radius: 50%; border: 2px solid transparent; }
-        .r1 { width: 100%; height: 100%; border-top: 3px solid var(--neon); animation: spin 3s linear infinite; box-shadow: 0 0 15px var(--neon); }
-        .r2 { width: 80%; height: 80%; border-bottom: 2px solid var(--gold); animation: spinRev 5s linear infinite; }
-        .center-orb { width: 90px; height: 90px; background: radial-gradient(circle, #003333, #000); border-radius: 50%; border: 1px solid var(--neon); display: flex; justify-content: center; align-items: center; z-index: 10; font-size: 11px; color: #fff; text-shadow: 0 0 10px var(--neon); }
-        .center-orb.active { animation: pulse 0.4s infinite alternate; border-color: var(--gold); box-shadow: 0 0 30px var(--gold); }
+        .r1 { width: 100%; height: 100%; border-top: 3px solid var(--neon); animation: spin 3s linear infinite; }
+        .r2 { width: 85%; height: 85%; border-bottom: 2px solid var(--gold); animation: spinRev 5s linear infinite; }
+        
+        .center-orb { 
+            width: 100px; height: 100px; 
+            background: radial-gradient(circle, #004444, #000); 
+            border-radius: 50%; border: 1px solid var(--neon); 
+            display: flex; justify-content: center; align-items: center; 
+            box-shadow: 0 0 20px rgba(69, 243, 255, 0.3);
+            font-size: 10px; cursor: pointer; transition: 0.5s;
+        }
 
-        /* Chat Display */
-        #chatDisplay { width: 90%; max-width: 500px; height: 250px; margin-top: 25px; overflow-y: auto; background: rgba(0, 5, 5, 0.9); border: 1px solid rgba(69, 243, 255, 0.2); border-radius: 20px; padding: 20px; font-size: 13px; font-family: 'Inter', sans-serif; scrollbar-width: none; line-height: 1.6; }
-        #chatDisplay div { margin-bottom: 15px; }
+        /* কথা বলার সময় লাইভ এনিমেশন */
+        .speaking-anim { 
+            animation: liveVoice 0.4s infinite alternate !important; 
+            box-shadow: 0 0 50px var(--neon), inset 0 0 20px var(--neon) !important;
+            background: radial-gradient(circle, var(--neon), #000) !important;
+        }
 
-        /* Input Controls */
-        .controls { margin-top: 20px; display: flex; gap: 12px; width: 90%; max-width: 500px; }
-        input { flex: 1; background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(69, 243, 255, 0.3); color: #fff; padding: 15px 20px; outline: none; border-radius: 15px; font-size: 14px; transition: 0.3s; }
-        input:focus { border-color: var(--neon); background: rgba(255, 255, 255, 0.1); }
-        .btn-exe { background: var(--neon); color: #000; border: none; padding: 0 25px; font-weight: 900; border-radius: 15px; cursor: pointer; transition: 0.3s; }
-        .btn-exe:hover { background: var(--gold); box-shadow: 0 0 15px var(--gold); }
+        @keyframes liveVoice {
+            from { transform: scale(1); opacity: 0.8; }
+            to { transform: scale(1.15); opacity: 1; }
+        }
+
+        /* UI Elements Styling */
+        #chatDisplay { width: 90%; max-width: 480px; height: 180px; margin-top: 30px; background: rgba(0,10,10,0.8); border: 1px solid rgba(69,243,255,0.1); border-radius: 20px; padding: 15px; font-size: 12px; overflow-y: auto; scrollbar-width: none; transition: 0.5s; }
+        .controls { margin-top: 20px; display: flex; gap: 10px; width: 90%; max-width: 480px; transition: 0.5s; }
+        input { flex: 1; background: #080808; border: 1px solid #222; color: #fff; padding: 15px; border-radius: 12px; outline: none; }
+        .mic-btn { background: none; border: 1px solid var(--neon); color: var(--neon); padding: 15px; border-radius: 12px; cursor: pointer; }
 
         @keyframes spin { 100% { transform: rotate(360deg); } }
         @keyframes spinRev { 100% { transform: rotate(-360deg); } }
-        @keyframes pulse { from { transform: scale(1); } to { transform: scale(1.1); } }
     </style>
 </head>
 <body>
-<div class="bg-container"><div class="grid"></div></div>
-<div class="main-ui">
-    <div class="top-nav">
-        <button class="logout-btn" id="logoutBtn">Logout System</button>
-        <div class="live-tag"><i class="fas fa-circle"></i> LIVE FEED: MARCH 11, 2026</div>
+
+<div class="main-ui" id="mainUI">
+    <div class="top-nav" style="position:absolute; top:5%;">
+        <button onclick="location.href='index.html'" style="background:none; border:1px solid red; color:red; padding:5px 15px; border-radius:20px; font-size:10px; cursor:pointer;">LOGOUT</button>
     </div>
 
-    <div class="core-box">
+    <div class="core-box" id="coreContainer">
         <div class="ring r1"></div><div class="ring r2"></div>
-        <div class="center-orb" id="orb">HEROVEE</div>
+        <div class="center-orb" id="orb" onclick="toggleVoiceMode()">HEROVEE</div>
     </div>
 
     <div id="chatDisplay"></div>
 
     <div class="controls">
-        <input type="text" id="userInput" placeholder="Ask anything, Boss Siyam..." onkeypress="if(event.key === 'Enter') askAI()">
-        <button class="btn-exe" onclick="askAI()"><i class="fas fa-bolt"></i></button>
+        <input type="text" id="userInput" placeholder="Type command...">
+        <button class="mic-btn" onclick="toggleVoiceMode()"><i class="fas fa-microphone"></i></button>
     </div>
 </div>
 
-<script type="module">
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
-    import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
-
-    const firebaseConfig = {
-        apiKey: "AIzaSyAEl8t2m_HZ1oNOC49lmpiiM4-XhGzWRfE",
-        authDomain: "herovee.firebaseapp.com",
-        projectId: "herovee",
-        storageBucket: "herovee.firebasestorage.app",
-        messagingSenderId: "700112828047",
-        appId: "1:700112828047:web:988f0598b5341a29bba2fa"
-    };
-    const app = initializeApp(firebaseConfig);
-    const auth = getAuth(app);
-
-    onAuthStateChanged(auth, (user) => { if (!user) window.location.href = "index.html"; });
-    document.getElementById('logoutBtn').onclick = () => { signOut(auth).then(() => { localStorage.clear(); window.location.href = "index.html"; }); };
-
-    const API_KEYS = ["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", "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", "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", "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", "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", "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", "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", "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", "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", "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", "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"];
-
-    const chatDisplay = document.getElementById('chatDisplay');
+<script>
     const orb = document.getElementById('orb');
+    const mainUI = document.getElementById('mainUI');
+    const chatDisplay = document.getElementById('chatDisplay');
 
-    window.askAI = async () => {
-        const input = document.getElementById('userInput');
-        const val = input.value.trim();
-        if(!val) return;
+    function toggleVoiceMode() {
+        // Voice Mode Active
+        mainUI.classList.add('voice-mode-active');
+        orb.innerText = "LISTENING";
         
-        chatDisplay.innerHTML += `<div style="color:var(--neon);"><b>[SIYAM]:</b> ${val}</div>`;
-        input.value = "";
-        orb.classList.add('active');
-        chatDisplay.scrollTop = chatDisplay.scrollHeight;
+        const recognition = new (window.webkitSpeechRecognition || window.SpeechRecognition)();
+        recognition.lang = 'bn-BD';
 
-        // Current Date Tracking for 2026
-        const today = new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
+        recognition.onstart = () => {
+            orb.classList.add('speaking-anim'); // এনিমেশন শুরু
+        };
 
-        async function tryRequest(idx) {
-            if(idx >= API_KEYS.length) return "All API channels are saturated, Boss.";
-            try {
-                const res = await fetch("https://api.groq.com/openai/v1/chat/completions", {
-                    method: "POST",
-                    headers: { "Authorization": `Bearer ${API_KEYS[idx]}`, "Content-Type": "application/json" },
-                    body: JSON.stringify({
-                        model: "llama-3.3-70b-versatile",
-                        messages: [
-                            { role: "system", content: `You are HEROVEE, an ultra-advanced AI built by Siyam. Current date: ${today}. You have live web-access capabilities. Always provide answers in the context of 2026. Be concise and sharp.` },
-                            { role: "user", content: val }
-                        ],
-                        temperature: 0.7
-                    })
-                });
-                const data = await res.json();
-                if(res.status === 429) return await tryRequest(idx + 1);
-                return data.choices[0].message.content;
-            } catch { return await tryRequest(idx + 1); }
-        }
+        recognition.onresult = async (event) => {
+            const command = event.results[0][0].transcript;
+            orb.innerText = "THINKING";
+            
+            // এখানে আপনার Groq API কল হবে (আগের কোডের মতো)
+            // উদাহরণের জন্য ১ সেকেন্ড ওয়েট করছি
+            setTimeout(() => {
+                const reply = "Bosh, ami apnar kotha shunte peyechi. Apni bollen: " + command;
+                speak(reply);
+            }, 1000);
+        };
 
-        const reply = await tryRequest(0);
-        orb.classList.remove('active');
-        chatDisplay.innerHTML += `<div style="color:var(--gold);"><b>[HEROVEE]:</b> ${reply}</div>`;
-        chatDisplay.scrollTop = chatDisplay.scrollHeight;
-    };
+        recognition.onend = () => {
+            // কথা বলা শেষ হলে আবার নরমাল মোডে ফিরবে (কিছুক্ষণ পর)
+        };
+
+        recognition.start();
+    }
+
+    function speak(text) {
+        const synth = window.speechSynthesis;
+        const utter = new SpeechSynthesisUtterance(text);
+        utter.lang = 'bn-BD';
+
+        utter.onstart = () => {
+            orb.innerText = "SPEAKING";
+            orb.classList.add('speaking-anim');
+        };
+
+        utter.onend = () => {
+            orb.classList.remove('speaking-anim');
+            orb.innerText = "HEROVEE";
+            // ৩ সেকেন্ড পর আবার সব লেখা ফিরিয়ে আনা
+            setTimeout(() => {
+                mainUI.classList.remove('voice-mode-active');
+            }, 2000);
+        };
+
+        synth.speak(utter);
+    }
 </script>
+
 </body>
 </html>
