@@ -1,143 +1,170 @@
 <!DOCTYPE html>
-<html lang="bn">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>HEROVEE - LOGIN</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700&family=Inter:wght@400&display=swap" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>HEROVEE - Ultra Pro 2026</title>
     <style>
-        body, html { 
-            margin: 0; padding: 0; width: 100%; height: 100%; 
-            background-color: #000; display: flex; 
-            align-items: center; justify-content: center;
-            font-family: 'Inter', sans-serif;
+        @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@900&family=Inter:wght@400;600&display=swap');
+
+        * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+        body { background: #000; height: 100vh; display: flex; align-items: center; justify-content: center; font-family: 'Inter', sans-serif; overflow: hidden; }
+
+        .loader-container { position: absolute; width: 520px; height: 520px; display: flex; align-items: center; justify-content: center; z-index: 1; }
+        .circle { position: absolute; border: 6px solid transparent; border-radius: 50%; animation: rotate linear infinite; }
+        
+        .circle:nth-child(1) { width: 100%; height: 100%; border-top-color: #45f3ff; animation-duration: 4s; filter: drop-shadow(0 0 15px #45f3ff); }
+        .circle:nth-child(2) { width: 88%; height: 88%; border-bottom-color: #ff3c7b; animation-duration: 3s; animation-direction: reverse; filter: drop-shadow(0 0 15px #ff3c7b); }
+        .circle:nth-child(3) { width: 76%; height: 76%; border-left-color: #ffee00; animation-duration: 5s; filter: drop-shadow(0 0 15px #ffee00); }
+        .circle:nth-child(4) { width: 64%; height: 64%; border-right-color: #00ff44; animation-duration: 2.5s; animation-direction: reverse; filter: drop-shadow(0 0 15px #00ff44); }
+        .circle:nth-child(5) { width: 52%; height: 52%; border-top-color: #7d45ff; animation-duration: 6s; filter: drop-shadow(0 0 15px #7d45ff); }
+
+        @keyframes rotate { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+
+        .card {
+            position: relative; width: 92%; max-width: 380px;
+            background: rgba(5, 5, 5, 0.9); backdrop-filter: blur(30px);
+            border-radius: 40px; padding: 40px 25px; z-index: 10;
+            border: 1px solid rgba(255, 255, 255, 0.1); text-align: center;
         }
 
-        .login-container {
-            width: 85%;
-            max-width: 360px;
-            background-color: #0c0c0c;
-            padding: 60px 30px;
-            border-radius: 40px;
-            text-align: center;
-            box-shadow: 0 0 50px rgba(0,0,0,0.8);
+        .logo { 
+            font-family: 'Orbitron', sans-serif; 
+            font-size: 34px; letter-spacing: 7px; margin-bottom: 30px;
+            font-weight: 900; animation: colorShift 8s infinite linear;
         }
 
-        .brand-logo {
-            font-family: 'Orbitron', sans-serif;
-            font-size: 32px;
-            font-weight: 700;
-            letter-spacing: 6px;
-            color: #ffffff;
-            margin-bottom: 45px;
-            text-transform: uppercase;
+        @keyframes colorShift {
+            0% { color: #45f3ff; text-shadow: 0 0 20px #45f3ff; }
+            25% { color: #ff3c7b; text-shadow: 0 0 20px #ff3c7b; }
+            50% { color: #ffee00; text-shadow: 0 0 20px #ffee00; }
+            75% { color: #00ff44; text-shadow: 0 0 20px #00ff44; }
+            100% { color: #45f3ff; text-shadow: 0 0 20px #45f3ff; }
         }
 
-        .input-field {
-            width: 100%;
-            background-color: #1a1a1a;
-            border: none;
-            padding: 18px 25px;
-            border-radius: 20px;
-            color: #ffffff;
-            font-size: 14px;
-            margin-bottom: 15px;
-            outline: none;
-            box-sizing: border-box;
+        .input-group { display: flex; flex-direction: column; gap: 12px; margin-bottom: 20px; }
+        .input-style, select { 
+            width: 100%; padding: 16px 22px; background: rgba(255,255,255,0.05); 
+            border: 1px solid rgba(255,255,255,0.1); border-radius: 50px; 
+            color: white; outline: none; font-size: 14px; transition: 0.3s;
+        }
+        select option { background: #111; color: #fff; }
+        .input-style:focus { border-color: #45f3ff; background: rgba(255,255,255,0.1); }
+
+        .btn-action {
+            width: 100%; padding: 18px; background: linear-gradient(90deg, #ff3c7b, #ffed00);
+            border: none; border-radius: 50px; color: #000; font-weight: 800; 
+            cursor: pointer; font-size: 15px; text-transform: uppercase; letter-spacing: 1px;
         }
 
-        .input-field::placeholder {
-            color: #4a4a4a;
-        }
-
-        .signin-btn {
-            width: 100%;
-            margin-top: 25px;
-            padding: 18px;
-            border-radius: 50px;
-            border: none;
-            font-weight: 700;
-            font-size: 14px;
-            text-transform: uppercase;
-            background: linear-gradient(90deg, #ff4d94 0%, #ffcc33 100%);
-            color: #000;
-            cursor: pointer;
-            transition: 0.3s;
-        }
-
-        .signin-btn:active {
-            transform: scale(0.98);
-        }
-
-        .footer-nav {
-            margin-top: 30px;
-            display: flex;
-            justify-content: space-between;
-            padding: 0 10px;
-        }
-
-        .footer-nav a {
-            color: #555;
-            text-decoration: none;
-            font-size: 12px;
-            transition: 0.3s;
-        }
-
-        .footer-nav a:hover {
-            color: #888;
-        }
+        .links-container { display: flex; justify-content: space-between; margin-top: 20px; padding: 0 15px; }
+        .link { color: rgba(255,255,255,0.5); cursor: pointer; font-size: 11px; text-decoration: none; }
+        
+        #toast { position: fixed; bottom: -60px; left: 50%; transform: translateX(-50%); background: #ff3c7b; color: white; padding: 12px 30px; border-radius: 50px; transition: 0.5s; z-index: 100; font-size: 13px; }
+        #toast.active { bottom: 40px; }
     </style>
 </head>
 <body>
 
-    <div class="login-container">
-        <div class="brand-logo">HEROVEE</div>
-        
-        <input type="email" id="email" class="input-field" placeholder="Gmail Address" value="sadaf245sz@gmail.com">
-        <input type="password" id="pass" class="input-field" placeholder="Password">
+    <div class="loader-container">
+        <div class="circle"></div><div class="circle"></div><div class="circle"></div><div class="circle"></div><div class="circle"></div>
+    </div>
 
-        <button class="signin-btn" onclick="handleLogin()">SIGN IN</button>
+    <div class="card">
+        <h1 class="logo">HEROVEE</h1>
 
-        <div class="footer-nav">
-            <a href="#">Forget Password</a>
-            <a href="#">Create Account</a>
+        <div id="loginBox">
+            <div class="input-group">
+                <input type="email" id="logEmail" class="input-style" placeholder="Gmail Address">
+                <input type="password" id="logPass" class="input-style" placeholder="Password">
+            </div>
+            <button class="btn-action" id="logBtn">SIGN IN</button>
+            <div class="links-container">
+                <span class="link" onclick="showBox('resetBox')">Forget Password</span>
+                <span class="link" onclick="showBox('regBox')">Create Account</span>
+            </div>
+        </div>
+
+        <div id="regBox" style="display: none;">
+            <div class="input-group">
+                <input type="text" id="regName" class="input-style" placeholder="Full Name">
+                <select id="regCountry" class="input-style">
+                    <option value="" disabled selected>Select Country</option>
+                </select>
+                <input type="email" id="regEmail" class="input-style" placeholder="Gmail Address">
+                <input type="password" id="regPass1" class="input-style" placeholder="Password">
+                <input type="password" id="regPass2" class="input-style" placeholder="Confirm Password">
+            </div>
+            <button class="btn-action" id="regBtn">SIGN UP</button>
+            <div class="links-container">
+                <span></span>
+                <span class="link" onclick="showBox('loginBox')">Back to Login</span>
+            </div>
+        </div>
+
+        <div id="resetBox" style="display: none;">
+            <div class="input-group">
+                <input type="email" id="resEmail" class="input-style" placeholder="Your Gmail">
+            </div>
+            <button class="btn-action" id="resBtn">RESET PASSWORD</button>
+            <div class="links-container">
+                <span></span>
+                <span class="link" onclick="showBox('loginBox')">Cancel</span>
+            </div>
         </div>
     </div>
 
+    <div id="toast">Message</div>
+
     <script type="module">
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
-        import { getAuth, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js";
+        import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, sendPasswordResetEmail, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-auth.js";
 
-        const firebaseConfig = { 
-            apiKey: "AIzaSyAEl8t2m_HZ1oNOC49lmpiiM4-XhGzWRfE", 
-            authDomain: "herovee.firebaseapp.com", 
-            projectId: "herovee", 
-            storageBucket: "herovee.firebasestorage.app", 
-            messagingSenderId: "700112828047", 
-            appId: "1:700112828047:web:988f0598b5341a29bba2fa" 
-        };
-
+        const firebaseConfig = { apiKey: "AIzaSyAEl8t2m_HZ1oNOC49lmpiiM4-XhGzWRfE", authDomain: "herovee.firebaseapp.com", projectId: "herovee", storageBucket: "herovee.firebasestorage.app", messagingSenderId: "700112828047", appId: "1:700112828047:web:988f0598b5341a29bba2fa" };
         const app = initializeApp(firebaseConfig);
         const auth = getAuth(app);
 
-        window.handleLogin = () => {
-            const email = document.getElementById('email').value;
-            const p = document.getElementById('pass').value;
-            const btn = document.querySelector('.signin-btn');
-            
-            if(!p) return;
-            btn.innerText = "WAITING...";
+        // Fetch Countries
+        const countryDropdown = document.getElementById('regCountry');
+        fetch('https://restcountries.com/v3.1/all?fields=name').then(res => res.json()).then(data => {
+            data.sort((a,b) => a.name.common.localeCompare(b.name.common)).forEach(c => {
+                let opt = document.createElement('option'); opt.value = c.name.common; opt.innerHTML = c.name.common; countryDropdown.appendChild(opt);
+            });
+        });
 
-            signInWithEmailAndPassword(auth, email, p)
-                .then(() => { 
-                    window.location.href = "vault.html"; 
-                })
-                .catch(() => { 
-                    alert("INVALID ACCESS!"); 
-                    btn.innerText = "SIGN IN";
-                });
+        const showToast = (msg) => { const t = document.getElementById('toast'); t.innerText = msg; t.classList.add('active'); setTimeout(() => t.classList.remove('active'), 3000); };
+
+        window.showBox = (id) => {
+            ['loginBox', 'regBox', 'resetBox'].forEach(box => document.getElementById(box).style.display = 'none');
+            document.getElementById(id).style.display = 'block';
         };
+
+        // Sign In
+        document.getElementById('logBtn').onclick = () => {
+            const e = document.getElementById('logEmail').value;
+            const p = document.getElementById('logPass').value;
+            if(!e || !p) return showToast("Fields Empty!");
+            signInWithEmailAndPassword(auth, e, p).catch(() => showToast("Auth Failed!"));
+        };
+
+        // Sign Up
+        document.getElementById('regBtn').onclick = () => {
+            const name = document.getElementById('regName').value;
+            const email = document.getElementById('regEmail').value;
+            const p1 = document.getElementById('regPass1').value;
+            const p2 = document.getElementById('regPass2').value;
+            if(p1 !== p2) return showToast("Passwords Mismatch!");
+            createUserWithEmailAndPassword(auth, email, p1).then(() => { showToast("Success! Please Login."); showBox('loginBox'); }).catch(e => showToast(e.message));
+        };
+
+        // Password Reset
+        document.getElementById('resBtn').onclick = () => {
+            const e = document.getElementById('resEmail').value;
+            if(!e) return showToast("Enter Email!");
+            sendPasswordResetEmail(auth, e).then(() => showToast("Reset Link Sent!")).catch(() => showToast("Error!"));
+        };
+
+        onAuthStateChanged(auth, (u) => { if (u) window.location.href = "vault.html"; });
     </script>
 </body>
 </html>
