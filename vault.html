@@ -3,47 +3,27 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>HEROVEE - EMOTIONAL CORE</title>
+    <title>HEROVEE - OPENAI EDITION</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Inter:wght@400;600&display=swap');
-        
-        :root { --neon: #45f3ff; --gold: #ffee00; --pink: #ff3c7b; --bg: #000; }
+        :root { --neon: #45f3ff; --pink: #ff3c7b; --bg: #000; }
         body, html { margin: 0; padding: 0; width: 100%; height: 100%; background: var(--bg); color: var(--neon); font-family: 'Orbitron', sans-serif; overflow: hidden; }
-        
-        /* Cosmic Grid Background */
         .bg-container { position: fixed; width: 100%; height: 100%; perspective: 1000px; z-index: -1; }
-        .grid { position: absolute; width: 200%; height: 200%; top: -50%; left: -50%; background-image: linear-gradient(var(--neon) 1px, transparent 1px), linear-gradient(90deg, var(--neon) 1px, transparent 1px); background-size: 60px 60px; transform: rotateX(60deg); opacity: 0.05; animation: moveGrid 15s linear infinite; }
-        @keyframes moveGrid { 0% { transform: rotateX(60deg) translateY(0); } 100% { transform: rotateX(60deg) translateY(60px); } }
-
-        .main-ui { display: flex; flex-direction: column; align-items: center; justify-content: flex-start; height: 100vh; position: relative; padding-top: 50px; transition: 0.8s; }
-        
-        .top-nav { position: absolute; top: 15px; right: 15px; z-index: 100; }
-        .logout-btn { background: rgba(255, 0, 0, 0.1); border: 1px solid var(--pink); color: var(--pink); padding: 6px 20px; border-radius: 50px; cursor: pointer; font-size: 10px; font-weight: bold; transition: 0.3s; text-transform: uppercase; font-family: 'Inter'; }
-
-        /* The POOR SQUAD Orbit Core */
-        .core-box { position: relative; width: 230px; height: 230px; display: flex; justify-content: center; align-items: center; z-index: 10; margin-bottom: 20px; }
+        .grid { position: absolute; width: 200%; height: 200%; top: -50%; left: -50%; background-image: linear-gradient(var(--neon) 1px, transparent 1px), linear-gradient(90deg, var(--neon) 1px, transparent 1px); background-size: 60px 60px; transform: rotateX(60deg); opacity: 0.05; }
+        .main-ui { display: flex; flex-direction: column; align-items: center; height: 100vh; padding-top: 50px; }
+        .core-box { position: relative; width: 220px; height: 220px; display: flex; justify-content: center; align-items: center; margin-bottom: 20px; }
         .ring { position: absolute; border-radius: 50%; border: 5px solid transparent; }
         .r1 { width: 100%; height: 100%; border-top-color: var(--neon); animation: spin 4s linear infinite; box-shadow: 0 0 15px var(--neon); }
         .r2 { width: 85%; height: 85%; border-bottom-color: var(--pink); animation: spinRev 6s linear infinite; }
-        
-        .center-orb { width: 120px; height: 120px; background: radial-gradient(circle, #002222, #000); border-radius: 50%; border: 1px solid var(--neon); display: flex; flex-direction: column; justify-content: center; align-items: center; z-index: 10; cursor: pointer; transition: 0.5s; text-align: center; overflow: hidden; }
-        .speaking-anim { animation: livePulse 0.4s infinite alternate !important; box-shadow: 0 0 50px var(--neon) !important; }
-
-        .orb-text { color: #fff; text-shadow: 0 0 10px var(--neon); text-transform: uppercase; pointer-events: none; }
-        .orb-t1 { font-size: 13px; font-weight: 900; }
-        .orb-t2 { font-size: 10px; margin-top: 2px; }
-
-        @keyframes livePulse { from { transform: scale(1); } to { transform: scale(1.1); } }
-
-        /* Chat Display */
-        #chatDisplay { width: 90%; max-width: 480px; height: 220px; background: rgba(5, 5, 5, 0.9); border: 1px solid rgba(255, 255, 255, 0.05); border-radius: 25px; padding: 20px; font-size: 13px; font-family: 'Inter', sans-serif; overflow-y: auto; color: #fff; scrollbar-width: none; }
-        
-        /* Controls */
-        .controls { margin-top: 20px; display: flex; gap: 10px; width: 92%; max-width: 480px; }
-        .action-btn { background: rgba(255, 255, 255, 0.05); border: 1px solid var(--neon); color: var(--neon); width: 55px; height: 55px; border-radius: 15px; cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 18px; }
-        input { flex: 1; background: #080808; border: 1px solid rgba(255, 255, 255, 0.1); color: #fff; padding: 0 18px; border-radius: 15px; outline: none; font-size: 14px; font-family: 'Inter'; }
-
+        .center-orb { width: 110px; height: 110px; background: radial-gradient(circle, #002222, #000); border-radius: 50%; border: 1px solid var(--neon); display: flex; flex-direction: column; justify-content: center; align-items: center; z-index: 10; text-align: center; }
+        .speaking-anim { animation: pulse 0.4s infinite alternate; box-shadow: 0 0 50px var(--neon); }
+        .orb-text { color: #fff; text-shadow: 0 0 8px var(--neon); text-transform: uppercase; font-size: 10px; font-weight: 900; }
+        #chatDisplay { width: 90%; max-width: 450px; height: 200px; background: rgba(5, 5, 5, 0.9); border: 1px solid rgba(255, 255, 255, 0.05); border-radius: 20px; padding: 20px; font-size: 13px; font-family: 'Inter'; overflow-y: auto; color: #fff; margin-bottom: 20px; scrollbar-width: none; }
+        .controls { width: 92%; max-width: 450px; display: flex; gap: 10px; }
+        input { flex: 1; background: #080808; border: 1px solid #222; color: #fff; padding: 15px; border-radius: 12px; outline: none; }
+        .btn { background: var(--neon); border: none; padding: 15px; border-radius: 12px; cursor: pointer; color: #000; font-weight: bold; }
+        @keyframes pulse { from { transform: scale(1); } to { transform: scale(1.1); } }
         @keyframes spin { 100% { transform: rotate(360deg); } }
         @keyframes spinRev { 100% { transform: rotate(-360deg); } }
     </style>
@@ -51,101 +31,93 @@
 <body>
 <div class="bg-container"><div class="grid"></div></div>
 <div class="main-ui">
-    <div class="top-nav"><button class="logout-btn" onclick="logout()">TERMINATE</button></div>
-
     <div class="core-box">
         <div class="ring r1"></div><div class="ring r2"></div>
         <div class="center-orb" id="orb">
-            <span class="orb-text orb-t1">The</span>
-            <span class="orb-text orb-t2">Poor Squad</span>
+            <span class="orb-text">The</span>
+            <span class="orb-text">Poor Squad</span>
         </div>
     </div>
-
     <div id="chatDisplay"></div>
-
     <div class="controls">
-        <button class="action-btn" onclick="startVoice()"><i class="fas fa-microphone"></i></button>
-        <input type="text" id="userInput" placeholder="বস্, কিছু বলুন..." onkeypress="if(event.key === 'Enter') askAI()">
-        <button class="action-btn" style="border-color: var(--gold); color: var(--gold);" onclick="askAI()"><i class="fas fa-paper-plane"></i></button>
+        <button class="btn" onclick="startVoice()"><i class="fas fa-microphone"></i></button>
+        <input type="text" id="userInput" placeholder="বস্, কিছু লিখুন..." onkeypress="if(event.key === 'Enter') askAI()">
+        <button class="btn" onclick="askAI()"><i class="fas fa-paper-plane"></i></button>
     </div>
 </div>
 
-<script type="module">
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
-    import { getAuth, signOut } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
-
-    const firebaseConfig = { apiKey: "AIzaSyAEl8t2m_HZ1oNOC49lmpiiM4-XhGzWRfE", authDomain: "herovee.firebaseapp.com", projectId: "herovee", storageBucket: "herovee.firebasestorage.app", messagingSenderId: "700112828047", appId: "1:700112828047:web:988f0598b5341a29bba2fa" };
-    const app = initializeApp(firebaseConfig);
-    const auth = getAuth(app);
-
-    const ELEVEN_API_KEY = "sk_3753f110f6dff10a31f2796ac717d22466cdac9c91d55c22"; // আপনার এপিআই কি
-    const VOICE_ID = "EXAVITQu4vr4xnSDxMaL"; // Bella (মিষ্টি কন্ঠস্বর)
+<script>
+    // আপনার OpenAI Key
+    const OPENAI_KEY = "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";
     const chatDisplay = document.getElementById('chatDisplay');
     const orb = document.getElementById('orb');
 
-    window.logout = () => signOut(auth).then(() => window.location.href = "index.html");
-
-    // ElevenLabs Voice Logic
-    async function speak(text) {
-        try {
-            const res = await fetch(`https://api.elevenlabs.io/v1/text-to-speech/${VOICE_ID}`, {
-                method: "POST",
-                headers: { "xi-api-key": ELEVEN_API_KEY, "Content-Type": "application/json" },
-                body: JSON.stringify({ 
-                    text: text, 
-                    model_id: "eleven_multilingual_v2",
-                    voice_settings: { stability: 0.5, similarity_boost: 0.8 } 
-                })
-            });
-            const blob = await res.blob();
-            const audio = new Audio(URL.createObjectURL(blob));
-            orb.classList.add('speaking-anim');
-            audio.play();
-            audio.onended = () => orb.classList.remove('speaking-anim');
-        } catch (e) { console.error("Voice Error"); }
+    // নরমাল ব্রাউজার ভয়েস সেটআপ (ফ্রি)
+    function speak(text) {
+        const synth = window.speechSynthesis;
+        const utter = new SpeechSynthesisUtterance(text);
+        const voices = synth.getVoices();
+        
+        // মেয়েদের মিষ্টি ভয়েস খোঁজা
+        const femaleVoice = voices.find(v => v.name.includes('Female') || v.name.includes('Google US English') || v.name.includes('Samantha'));
+        if (femaleVoice) utter.voice = femaleVoice;
+        
+        utter.lang = 'bn-BD'; // বাংলা সাপোর্ট
+        utter.pitch = 1.3;    // মিষ্টি করার জন্য পিচ বাড়ানো হয়েছে
+        utter.rate = 1.0;     // কথা বলার গতি
+        
+        utter.onstart = () => orb.classList.add('speaking-anim');
+        utter.onend = () => orb.classList.remove('speaking-anim');
+        
+        synth.speak(utter);
     }
 
-    // AI logic with "Short Response" constraint
-    window.askAI = async () => {
+    async function askAI() {
         const input = document.getElementById('userInput');
         const text = input.value.trim();
         if(!text) return;
 
         chatDisplay.innerHTML += `<div style="color:var(--neon); margin-bottom:10px;"><b>বস্:</b> ${text}</div>`;
         input.value = "";
-        orb.innerText = "WAIT";
 
         try {
-            const res = await fetch("https://api.groq.com/openai/v1/chat/completions", {
+            const res = await fetch("https://api.openai.com/v1/chat/completions", {
                 method: "POST",
-                headers: { "Authorization": `Bearer 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`, "Content-Type": "application/json" },
+                headers: { 
+                    "Authorization": `Bearer ${OPENAI_KEY}`, 
+                    "Content-Type": "application/json" 
+                },
                 body: JSON.stringify({
-                    model: "llama-3.3-70b-versatile",
+                    model: "gpt-3.5-turbo",
                     messages: [
-                        { role: "system", content: "আপনি HEROVEE, সিয়াম বসের মায়াবী মেয়ে বন্ধু। আপনি অত্যন্ত সংক্ষেপে (বড়জোর ১-২ বাক্য) কথা বলেন। একদম যান্ত্রিক হবেন না, কিন্তু খুব বেশি কথা বলবেন না। শুধু যতটুকু প্রয়োজন ততটুকুই বলবেন।" },
+                        { role: "system", content: "আপনি HEROVEE, সিয়াম বসের মায়াবী মেয়ে বন্ধু। আপনি সর্বোচ্চ ১-২ বাক্যে খুব সংক্ষেপে কথা বলেন।" },
                         { role: "user", content: text }
                     ]
                 })
             });
+
             const data = await res.json();
             const reply = data.choices[0].message.content;
-            chatDisplay.innerHTML += `<div style="color:var(--gold); margin-bottom:15px;"><b>HEROVEE:</b> ${reply}</div>`;
+            chatDisplay.innerHTML += `<div style="color:#ffee00; margin-bottom:15px;"><b>HEROVEE:</b> ${reply}</div>`;
             chatDisplay.scrollTop = chatDisplay.scrollHeight;
-            orb.innerHTML = `<span class="orb-text orb-t1">The</span><span class="orb-text orb-t2">Poor Squad</span>`;
             speak(reply);
-        } catch (e) { orb.innerText = "ERROR"; }
-    };
+        } catch (e) {
+            console.error("AI Error:", e);
+        }
+    }
 
-    window.startVoice = () => {
+    function startVoice() {
         const rec = new (window.webkitSpeechRecognition || window.SpeechRecognition)();
         rec.lang = 'bn-BD';
-        rec.onstart = () => orb.innerText = "LISTENING";
         rec.onresult = (e) => {
             document.getElementById('userInput').value = e.results[0][0].transcript;
-            window.askAI();
+            askAI();
         };
         rec.start();
-    };
+    }
+    
+    // ব্রাউজারের ভয়েস লোড হতে সময় নেয়
+    window.speechSynthesis.onvoiceschanged = () => {};
 </script>
 </body>
 </html>
