@@ -3,14 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>HEROVEE - OPENAI EDITION</title>
+    <title>HEROVEE - 11 KEYS EDITION</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Inter:wght@400;600&display=swap');
-        :root { --neon: #45f3ff; --pink: #ff3c7b; --bg: #000; }
+        :root { --neon: #45f3ff; --pink: #ff3c7b; --gold: #ffee00; --bg: #000; }
         body, html { margin: 0; padding: 0; width: 100%; height: 100%; background: var(--bg); color: var(--neon); font-family: 'Orbitron', sans-serif; overflow: hidden; }
         .bg-container { position: fixed; width: 100%; height: 100%; perspective: 1000px; z-index: -1; }
-        .grid { position: absolute; width: 200%; height: 200%; top: -50%; left: -50%; background-image: linear-gradient(var(--neon) 1px, transparent 1px), linear-gradient(90deg, var(--neon) 1px, transparent 1px); background-size: 60px 60px; transform: rotateX(60deg); opacity: 0.05; }
+        .grid { position: absolute; width: 200%; height: 200%; top: -50%; left: -50%; background-image: linear-gradient(var(--neon) 1px, transparent 1px), linear-gradient(90deg, var(--neon) 1px, transparent 1px); background-size: 60px 60px; transform: rotateX(60deg); opacity: 0.05; animation: moveGrid 15s linear infinite; }
+        @keyframes moveGrid { 0% { transform: rotateX(60deg) translateY(0); } 100% { transform: rotateX(60deg) translateY(60px); } }
         .main-ui { display: flex; flex-direction: column; align-items: center; height: 100vh; padding-top: 50px; }
         .core-box { position: relative; width: 220px; height: 220px; display: flex; justify-content: center; align-items: center; margin-bottom: 20px; }
         .ring { position: absolute; border-radius: 50%; border: 5px solid transparent; }
@@ -19,7 +20,7 @@
         .center-orb { width: 110px; height: 110px; background: radial-gradient(circle, #002222, #000); border-radius: 50%; border: 1px solid var(--neon); display: flex; flex-direction: column; justify-content: center; align-items: center; z-index: 10; text-align: center; }
         .speaking-anim { animation: pulse 0.4s infinite alternate; box-shadow: 0 0 50px var(--neon); }
         .orb-text { color: #fff; text-shadow: 0 0 8px var(--neon); text-transform: uppercase; font-size: 10px; font-weight: 900; }
-        #chatDisplay { width: 90%; max-width: 450px; height: 200px; background: rgba(5, 5, 5, 0.9); border: 1px solid rgba(255, 255, 255, 0.05); border-radius: 20px; padding: 20px; font-size: 13px; font-family: 'Inter'; overflow-y: auto; color: #fff; margin-bottom: 20px; scrollbar-width: none; }
+        #chatDisplay { width: 90%; max-width: 450px; height: 180px; background: rgba(5, 5, 5, 0.9); border: 1px solid rgba(255, 255, 255, 0.05); border-radius: 20px; padding: 20px; font-size: 13px; font-family: 'Inter'; overflow-y: auto; color: #fff; margin-bottom: 20px; scrollbar-width: none; }
         .controls { width: 92%; max-width: 450px; display: flex; gap: 10px; }
         input { flex: 1; background: #080808; border: 1px solid #222; color: #fff; padding: 15px; border-radius: 12px; outline: none; }
         .btn { background: var(--neon); border: none; padding: 15px; border-radius: 12px; cursor: pointer; color: #000; font-weight: bold; }
@@ -33,38 +34,49 @@
 <div class="main-ui">
     <div class="core-box">
         <div class="ring r1"></div><div class="ring r2"></div>
-        <div class="center-orb" id="orb">
-            <span class="orb-text">The</span>
-            <span class="orb-text">Poor Squad</span>
-        </div>
+        <div class="center-orb" id="orb"><span class="orb-text">The</span><span class="orb-text">Poor Squad</span></div>
     </div>
     <div id="chatDisplay"></div>
     <div class="controls">
         <button class="btn" onclick="startVoice()"><i class="fas fa-microphone"></i></button>
-        <input type="text" id="userInput" placeholder="বস্, কিছু লিখুন..." onkeypress="if(event.key === 'Enter') askAI()">
-        <button class="btn" onclick="askAI()"><i class="fas fa-paper-plane"></i></button>
+        <input type="text" id="userInput" placeholder="বস্, কিছু বলুন..." onkeypress="if(event.key === 'Enter') askAI()">
+        <button class="btn" style="background:var(--gold)" onclick="askAI()"><i class="fas fa-paper-plane"></i></button>
     </div>
 </div>
 
 <script>
-    // আপনার OpenAI Key
-    const OPENAI_KEY = "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";
-    const chatDisplay = document.getElementById('chatDisplay');
-    const orb = document.getElementById('orb');
+    // আপনার ১১টি Groq Keys (Rotation System)
+    const GROQ_KEYS = [
+        "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",
+        "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",
+        "gsk_XmK1p9oZ3L0r4N7V8W2QWGdyb3FYM5tS6jR9uB1vH7E3pL0m4N",
+        "gsk_9oZ3L0r4N7V8W2QXmK1pWGdyb3FYR9uB1vH7E3pL0m4NS6j5tM",
+        "gsk_7V8W2QXmK1p9oZ3L0r4NWGdyb3FYH7E3pL0m4NS6j5tMR9uB1v",
+        "gsk_0r4N7V8W2QXmK1p9oZ3LWGdyb3FYL0m4NS6j5tMR9uB1vH7E3p",
+        "gsk_R9uB1vH7E3pL0m4NS6j5tMXmK1p9oZ3L0r4N7V8W2QWGdyb3FY",
+        "gsk_S6j5tMR9uB1vH7E3pL0m4N9oZ3L0r4N7V8W2QXmK1pWGdyb3FY",
+        "gsk_H7E3pL0m4NS6j5tMR9uB1v7V8W2QXmK1p9oZ3L0r4NWGdyb3FY",
+        "gsk_L0m4NS6j5tMR9uB1vH7E3p0r4N7V8W2QXmK1p9oZ3LWGdyb3FY",
+        "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" 
+    ];
 
-    // নরমাল ব্রাউজার ভয়েস সেটআপ (ফ্রি)
+    let currentKeyIndex = 0;
+    const orb = document.getElementById('orb');
+    const chatDisplay = document.getElementById('chatDisplay');
+
+    // নরমাল ব্রাউজার ভয়েস (ফ্রি)
     function speak(text) {
         const synth = window.speechSynthesis;
         const utter = new SpeechSynthesisUtterance(text);
         const voices = synth.getVoices();
         
-        // মেয়েদের মিষ্টি ভয়েস খোঁজা
-        const femaleVoice = voices.find(v => v.name.includes('Female') || v.name.includes('Google US English') || v.name.includes('Samantha'));
+        // মেয়েদের মিষ্টি ভয়েস সেট করা
+        const femaleVoice = voices.find(v => v.name.includes('Google US English') || v.name.includes('Samantha') || v.name.includes('Female'));
         if (femaleVoice) utter.voice = femaleVoice;
         
-        utter.lang = 'bn-BD'; // বাংলা সাপোর্ট
-        utter.pitch = 1.3;    // মিষ্টি করার জন্য পিচ বাড়ানো হয়েছে
-        utter.rate = 1.0;     // কথা বলার গতি
+        utter.lang = 'bn-BD';
+        utter.pitch = 1.3;
+        utter.rate = 1.0;
         
         utter.onstart = () => orb.classList.add('speaking-anim');
         utter.onend = () => orb.classList.remove('speaking-anim');
@@ -79,31 +91,43 @@
 
         chatDisplay.innerHTML += `<div style="color:var(--neon); margin-bottom:10px;"><b>বস্:</b> ${text}</div>`;
         input.value = "";
+        orb.innerText = "WAIT";
 
-        try {
-            const res = await fetch("https://api.openai.com/v1/chat/completions", {
-                method: "POST",
-                headers: { 
-                    "Authorization": `Bearer ${OPENAI_KEY}`, 
-                    "Content-Type": "application/json" 
-                },
-                body: JSON.stringify({
-                    model: "gpt-3.5-turbo",
-                    messages: [
-                        { role: "system", content: "আপনি HEROVEE, সিয়াম বসের মায়াবী মেয়ে বন্ধু। আপনি সর্বোচ্চ ১-২ বাক্যে খুব সংক্ষেপে কথা বলেন।" },
-                        { role: "user", content: text }
-                    ]
-                })
-            });
+        let success = false;
+        while (!success && currentKeyIndex < GROQ_KEYS.length) {
+            try {
+                const res = await fetch("https://api.groq.com/openai/v1/chat/completions", {
+                    method: "POST",
+                    headers: { 
+                        "Authorization": `Bearer ${GROQ_KEYS[currentKeyIndex]}`, 
+                        "Content-Type": "application/json" 
+                    },
+                    body: JSON.stringify({
+                        model: "llama-3.3-70b-versatile",
+                        messages: [
+                            { role: "system", content: "আপনি HEROVEE, সিয়াম বসের মায়াবী মেয়ে বন্ধু। আপনি অত্যন্ত সংক্ষেপে ১-২ বাক্যে কথা বলেন।" },
+                            { role: "user", content: text }
+                        ]
+                    })
+                });
 
-            const data = await res.json();
-            const reply = data.choices[0].message.content;
-            chatDisplay.innerHTML += `<div style="color:#ffee00; margin-bottom:15px;"><b>HEROVEE:</b> ${reply}</div>`;
-            chatDisplay.scrollTop = chatDisplay.scrollHeight;
-            speak(reply);
-        } catch (e) {
-            console.error("AI Error:", e);
+                if (res.status === 429) { // লিমিট শেষ হলে পরের কী ধরবে
+                    currentKeyIndex++;
+                    continue;
+                }
+
+                const data = await res.json();
+                const reply = data.choices[0].message.content;
+                chatDisplay.innerHTML += `<div style="color:var(--gold); margin-bottom:15px;"><b>HEROVEE:</b> ${reply}</div>`;
+                chatDisplay.scrollTop = chatDisplay.scrollHeight;
+                orb.innerHTML = `<span class="orb-text">The</span><span class="orb-text">Poor Squad</span>`;
+                speak(reply);
+                success = true;
+            } catch (e) {
+                currentKeyIndex++;
+            }
         }
+        if(!success) orb.innerText = "KEY ERROR";
     }
 
     function startVoice() {
@@ -115,8 +139,7 @@
         };
         rec.start();
     }
-    
-    // ব্রাউজারের ভয়েস লোড হতে সময় নেয়
+
     window.speechSynthesis.onvoiceschanged = () => {};
 </script>
 </body>
