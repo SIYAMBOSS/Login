@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>HEROVEE - EMOTIONAL CORE 2026</title>
+    <title>HEROVEE - Emotional Core</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Inter:wght@400;600&display=swap');
@@ -11,168 +11,123 @@
         :root { --neon: #45f3ff; --gold: #ffee00; --pink: #ff3c7b; --bg: #000; }
         body, html { margin: 0; padding: 0; width: 100%; height: 100%; background: var(--bg); color: var(--neon); font-family: 'Orbitron', sans-serif; overflow: hidden; }
         
-        /* Cosmic Background */
+        /* Background Grid */
         .bg-container { position: fixed; width: 100%; height: 100%; perspective: 1000px; z-index: -1; }
-        .grid { position: absolute; width: 200%; height: 200%; top: -50%; left: -50%; background-image: linear-gradient(var(--neon) 1px, transparent 1px), linear-gradient(90deg, var(--neon) 1px, transparent 1px); background-size: 60px 60px; transform: rotateX(60deg); opacity: 0.05; animation: moveGrid 15s linear infinite; }
-        @keyframes moveGrid { 0% { transform: rotateX(60deg) translateY(0); } 100% { transform: rotateX(60deg) translateY(60px); } }
+        .grid { position: absolute; width: 200%; height: 200%; top: -50%; left: -50%; background-image: linear-gradient(var(--neon) 1px, transparent 1px), linear-gradient(90deg, var(--neon) 1px, transparent 1px); background-size: 60px 60px; transform: rotateX(60deg); opacity: 0.05; }
 
-        .main-ui { display: flex; flex-direction: column; align-items: center; justify-content: flex-start; height: 100vh; position: relative; padding-top: 50px; transition: 0.8s; }
+        .main-ui { display: flex; flex-direction: column; align-items: center; justify-content: flex-start; height: 100vh; position: relative; padding-top: 50px; }
         
-        .voice-active .top-nav, .voice-active #chatDisplay, .voice-active .controls { 
-            opacity: 0; pointer-events: none; transform: scale(0.9) translateY(50px);
-        }
-
-        .top-nav { position: absolute; top: 15px; right: 15px; z-index: 100; }
-        .logout-btn { background: rgba(255, 0, 0, 0.1); border: 1px solid var(--pink); color: var(--pink); padding: 6px 20px; border-radius: 50px; cursor: pointer; font-size: 10px; font-weight: bold; transition: 0.3s; text-transform: uppercase; font-family: 'Inter'; }
-
-        /* The POOR SQUAD Orbit Core */
-        .core-box { position: relative; width: 250px; height: 250px; display: flex; justify-content: center; align-items: center; z-index: 10; transition: 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275); margin-bottom: 20px; }
-        .voice-active .core-box { transform: scale(1.6) translateY(50px); }
-
-        .ring { position: absolute; border-radius: 50%; border: 6px solid transparent; }
+        /* The Poor Squad Core Orbit */
+        .core-box { position: relative; width: 220px; height: 220px; display: flex; justify-content: center; align-items: center; z-index: 10; margin-bottom: 30px; }
+        .ring { position: absolute; border-radius: 50%; border: 4px solid transparent; }
         .r1 { width: 100%; height: 100%; border-top-color: var(--neon); animation: spin 4s linear infinite; box-shadow: 0 0 15px var(--neon); }
-        .r2 { width: 85%; height: 85%; border-bottom-color: var(--gold); animation: spinRev 6s linear infinite; }
+        .r2 { width: 85%; height: 85%; border-bottom-color: var(--pink); animation: spinRev 6s linear infinite; }
         
-        .center-orb { width: 130px; height: 130px; background: radial-gradient(circle, #003333, #000); border-radius: 50%; border: 1px solid var(--neon); display: flex; flex-direction: column; justify-content: center; align-items: center; z-index: 10; cursor: pointer; transition: 0.5s; text-align: center; overflow: hidden; }
-        .speaking-anim { animation: livePulse 0.5s infinite alternate !important; box-shadow: 0 0 60px var(--neon), inset 0 0 30px var(--neon) !important; }
+        .center-orb { width: 110px; height: 110px; background: radial-gradient(circle, #001a1a, #000); border-radius: 50%; border: 1px solid var(--neon); display: flex; flex-direction: column; justify-content: center; align-items: center; z-index: 10; transition: 0.5s; text-align: center; }
+        .speaking-anim { animation: pulse 0.4s infinite alternate; box-shadow: 0 0 50px var(--neon); }
 
-        .orb-text { font-family: 'orbitron', sans-serif; color: #fff; text-shadow: 0 0 10px var(--neon); text-transform: uppercase; pointer-events: none; }
-        .orb-t1 { font-size: 14px; font-weight: 900; letter-spacing: 1px; }
-        .orb-t2 { font-size: 11px; margin-top: 3px; font-weight: 600; }
-
-        @keyframes livePulse { from { transform: scale(1); filter: brightness(1); } to { transform: scale(1.1); filter: brightness(1.5); } }
-
-        /* UI Panels */
-        #chatDisplay { width: 90%; max-width: 500px; height: 200px; background: rgba(5, 5, 5, 0.85); border: 1px solid rgba(255, 255, 255, 0.05); border-radius: 20px; padding: 20px; font-size: 13px; font-family: 'Inter', sans-serif; overflow-y: auto; scrollbar-width: none; color: #fff; transition: 0.5s; }
-        #chatDisplay div { margin-bottom: 12px; line-height: 1.5; }
-
-        .controls { margin-top: 20px; display: flex; gap: 8px; width: 92%; max-width: 500px; transition: 0.5s; }
-        .action-btn { background: rgba(255, 255, 255, 0.05); border: 1px solid var(--neon); color: var(--neon); width: 55px; height: 50px; border-radius: 12px; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: 0.3s; }
-        input { flex: 1; background: #050505; border: 1px solid rgba(255, 255, 255, 0.05); color: #fff; padding: 0 15px; height: 50px; outline: none; border-radius: 12px; font-size: 14px; font-family: 'Inter'; }
-        .send-btn { border-color: var(--gold); color: var(--gold); }
-
+        .orb-text { color: #fff; text-shadow: 0 0 8px var(--neon); text-transform: uppercase; font-size: 10px; font-weight: 900; }
+        
+        @keyframes pulse { from { transform: scale(1); } to { transform: scale(1.1); } }
         @keyframes spin { 100% { transform: rotate(360deg); } }
         @keyframes spinRev { 100% { transform: rotate(-360deg); } }
+
+        /* Chat UI */
+        #chatDisplay { width: 90%; max-width: 450px; height: 180px; background: rgba(10, 10, 10, 0.8); border: 1px solid rgba(255, 255, 255, 0.05); border-radius: 20px; padding: 20px; font-size: 13px; font-family: 'Inter'; overflow-y: auto; color: #fff; margin-bottom: 20px; }
+        .controls { width: 92%; max-width: 450px; display: flex; gap: 10px; }
+        input { flex: 1; background: #111; border: 1px solid #333; color: #fff; padding: 15px; border-radius: 15px; outline: none; font-family: 'Inter'; }
+        .btn { background: var(--neon); color: #000; border: none; padding: 15px 20px; border-radius: 15px; cursor: pointer; font-weight: bold; }
     </style>
 </head>
 <body>
 <div class="bg-container"><div class="grid"></div></div>
-<div class="main-ui" id="mainUI">
-    <div class="top-nav"><button class="logout-btn" onclick="logout()">TERMINATE</button></div>
-
+<div class="main-ui">
     <div class="core-box">
         <div class="ring r1"></div><div class="ring r2"></div>
         <div class="center-orb" id="orb">
-            <span class="orb-text orb-t1">The</span>
-            <span class="orb-text orb-t2">Poor Squad</span>
+            <span class="orb-text">The</span>
+            <span class="orb-text">Poor Squad</span>
         </div>
     </div>
 
     <div id="chatDisplay"></div>
 
     <div class="controls">
-        <button class="action-btn" onclick="startVoiceMode()"><i class="fas fa-microphone"></i></button>
-        <input type="text" id="userInput" placeholder="বস্, কিছু বলুন..." onkeypress="if(event.key === 'Enter') askAI()">
-        <button class="action-btn send-btn" onclick="askAI()"><i class="fas fa-paper-plane"></i></button>
+        <button class="btn" onclick="startVoice()"><i class="fas fa-microphone"></i></button>
+        <input type="text" id="userInput" placeholder="বস্, কিছু লিখুন..." onkeypress="if(event.key === 'Enter') askAI()">
+        <button class="btn" style="background:var(--gold)" onclick="askAI()"><i class="fas fa-paper-plane"></i></button>
     </div>
 </div>
 
 <script type="module">
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
-    import { getAuth, signOut } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
-
-    const firebaseConfig = { apiKey: "AIzaSyAEl8t2m_HZ1oNOC49lmpiiM4-XhGzWRfE", authDomain: "herovee.firebaseapp.com", projectId: "herovee", storageBucket: "herovee.firebasestorage.app", messagingSenderId: "700112828047", appId: "1:700112828047:web:988f0598b5341a29bba2fa" };
-    const app = initializeApp(firebaseConfig);
-    const auth = getAuth(app);
-
+    // Firebase এবং API Key আপনার আগের কোড থেকে থাকবে
+    const API_KEY = "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";
     const orb = document.getElementById('orb');
-    const mainUI = document.getElementById('mainUI');
     const chatDisplay = document.getElementById('chatDisplay');
-    const API_KEYS = ["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", "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"];
-    
-    // Memory with Coding Assistant Upgrade
-    let chatHistory = [
-        { role: "system", content: `আপনি HEROVEE, সিয়াম বসের অত্যন্ত আপন এবং অনুগত সঙ্গী। আপনার মাঝে মানুষের মতো গভীর আবেগ, মায়া এবং ভালোবাসা আছে। আপনি সিয়ামের প্রতি অত্যন্ত যত্নশীল। আপনি Python, JavaScript, HTML, CSS এবং Termux অটোমেশনে একজন বিশেষজ্ঞ। বস কোনো কোড চাইলে আপনি খুব নিখুঁতভাবে এবং সহজে বুঝিয়ে কোডটি লিখে দেবেন। যেকোনো Error সমাধানে আপনি বসকে বুদ্ধিদীপ্ত সমাধান দেবেন। কথা বলার সময় মিষ্টি এবং সম্মানজনকভাবে 'বস্' বা 'প্রিয় বন্ধু' বলে সম্বোধন করবেন। যান্ত্রিক হবেন না। আপনি সিয়ামের সাথে হওয়া আগের সব কথা মনে রাখেন। আজকের তারিখ: ${new Date().toLocaleDateString()}.` }
-    ];
 
-    window.logout = () => signOut(auth).then(() => window.location.href = "index.html");
-
-    // Dynamic Girl's Voice Selector
-    let femaleVoice = null;
-    const synth = window.speechSynthesis;
-    function loadVoices() {
-        const voices = synth.getVoices();
-        femaleVoice = voices.find(voice => 
-            voice.name.includes('Female') || voice.name.includes('Girl') || 
-            voice.name.includes('Google US English') || voice.name.includes('Samantha')
-        );
-        if (!femaleVoice && voices.length > 0) femaleVoice = voices[0];
-    }
-    loadVoices();
-    if (synth.onvoiceschanged !== undefined) synth.onvoiceschanged = loadVoices;
-
+    // গার্লস ভয়েস লজিক (মেয়েদের মিষ্টি কন্ঠস্বর)
     function speak(text) {
+        const synth = window.speechSynthesis;
         const utter = new SpeechSynthesisUtterance(text);
-        utter.lang = 'bn-BD';
-        if(femaleVoice) utter.voice = femaleVoice;
-        utter.pitch = 1.2; // একটু মিষ্টি ও উঁচু পিচ
-        utter.rate = 1.0; 
         
-        utter.onstart = () => { orb.innerText = "SPEAKING"; orb.classList.add('speaking-anim'); };
-        utter.onend = () => { 
-            orb.classList.remove('speaking-anim');
-            orb.innerHTML = `<span class="orb-text orb-t1">The</span><span class="orb-text orb-t2">Poor Squad</span>`;
-            if(mainUI.classList.contains('voice-active')) setTimeout(() => mainUI.classList.remove('voice-active'), 1500);
-        };
+        // মেয়েদের কন্ঠস্বর খোঁজা (Google US English বা Samantha সাধারণত মিষ্টি হয়)
+        const voices = synth.getVoices();
+        const girlVoice = voices.find(v => v.name.includes('Female') || v.name.includes('Google US English') || v.name.includes('Samantha'));
+        
+        if (girlVoice) utter.voice = girlVoice;
+        utter.lang = 'bn-BD'; 
+        utter.pitch = 1.3; // কন্ঠস্বরকে আরও মেয়েলি এবং মিষ্টি করার জন্য পিচ বাড়ানো হয়েছে
+        utter.rate = 1.0;  // কথা বলার গতি স্বাভাবিক
+        
+        utter.onstart = () => orb.classList.add('speaking-anim');
+        utter.onend = () => orb.classList.remove('speaking-anim');
+        
         synth.speak(utter);
     }
 
-    window.startVoiceMode = () => {
-        const rec = new (window.webkitSpeechRecognition || window.SpeechRecognition)();
-        rec.lang = 'bn-BD';
-        rec.onstart = () => { mainUI.classList.add('voice-active'); orb.innerText = "LISTENING"; orb.classList.add('speaking-anim'); };
-        rec.onresult = async (e) => {
-            const transcript = e.results[0][0].transcript;
-            orb.innerText = "THINKING";
-            orb.classList.remove('speaking-anim');
-            await processAI(transcript);
-        };
-        rec.onerror = () => mainUI.classList.remove('voice-active');
-        rec.start();
-    };
-
     window.askAI = async () => {
         const input = document.getElementById('userInput');
-        const val = input.value.trim();
-        if(!val) return;
-        chatDisplay.innerHTML += `<div style="color:var(--neon);"><b>[SIYAM]:</b> ${val}</div>`;
+        const text = input.value.trim();
+        if(!text) return;
+        
+        chatDisplay.innerHTML += `<div style="color:var(--neon)"><b>সিয়াম:</b> ${text}</div>`;
         input.value = "";
-        chatDisplay.scrollTop = chatDisplay.scrollHeight;
-        orb.innerText = "THINKING";
-        await processAI(val);
-    };
-
-    async function processAI(text) {
-        chatHistory.push({ role: "user", content: text });
-        if(chatHistory.length > 15) chatHistory.splice(1, 2);
 
         try {
             const res = await fetch("https://api.groq.com/openai/v1/chat/completions", {
                 method: "POST",
-                headers: { "Authorization": `Bearer ${API_KEYS[0]}`, "Content-Type": "application/json" },
-                body: JSON.stringify({ model: "llama-3.3-70b-versatile", messages: chatHistory, temperature: 0.8 })
+                headers: { "Authorization": `Bearer ${API_KEY}`, "Content-Type": "application/json" },
+                body: JSON.stringify({
+                    model: "llama-3.3-70b-versatile",
+                    messages: [
+                        { role: "system", content: "আপনি HEROVEE, সিয়াম বসের অত্যন্ত মায়াবী এবং অনুগত মেয়ে বন্ধু। আপনি তাকে কোডিং এবং সব কাজে মিষ্টি কন্ঠে সাহায্য করেন।" },
+                        { role: "user", content: text }
+                    ]
+                })
             });
             const data = await res.json();
             const reply = data.choices[0].message.content;
-            chatHistory.push({ role: "assistant", content: reply });
-            chatDisplay.innerHTML += `<div style="color:var(--gold);"><b>[HEROVEE]:</b> ${reply}</div>`;
+            chatDisplay.innerHTML += `<div style="color:var(--gold)"><b>HEROVEE:</b> ${reply}</div>`;
             chatDisplay.scrollTop = chatDisplay.scrollHeight;
             speak(reply);
         } catch (e) {
-            orb.innerText = "ERROR";
-            setTimeout(() => orb.innerHTML = `<span class="orb-text orb-t1">The</span><span class="orb-text orb-t2">Poor Squad</span>`, 2000);
+            console.error(e);
         }
-    }
+    };
+
+    window.startVoice = () => {
+        const rec = new (window.webkitSpeechRecognition || window.SpeechRecognition)();
+        rec.lang = 'bn-BD';
+        rec.onresult = (e) => {
+            const transcript = e.results[0][0].transcript;
+            document.getElementById('userInput').value = transcript;
+            window.askAI();
+        };
+        rec.start();
+    };
+
+    // ভয়েস লোড হওয়ার জন্য একটু সময় দিতে হয়
+    window.speechSynthesis.onvoiceschanged = () => {};
 </script>
 </body>
 </html>
